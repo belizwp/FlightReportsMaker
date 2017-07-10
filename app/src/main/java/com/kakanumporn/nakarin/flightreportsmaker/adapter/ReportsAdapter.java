@@ -28,7 +28,7 @@ public class ReportsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public int getItemCount() {
-        return 10;
+        return 3;
     }
 
 }
