@@ -1,5 +1,6 @@
 <com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipeLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:drag_edge="right"
@@ -14,6 +15,7 @@
         android:weightSum="1">
         <!--What you want to show-->
         <Button
+            android:id="@+id/btnExport"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@drawable/ripple_green"
@@ -21,6 +23,7 @@
             android:textColor="@android:color/white" />
 
         <Button
+            android:id="@+id/btnDelete"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@drawable/ripple_red"

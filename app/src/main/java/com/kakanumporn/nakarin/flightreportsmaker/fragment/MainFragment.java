@@ -2,6 +2,7 @@ package com.kakanumporn.nakarin.flightreportsmaker.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,9 +12,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.kakanumporn.nakarin.flightreportsmaker.R;
-import com.kakanumporn.nakarin.flightreportsmaker.adapter.ReportsAdapter;
+import com.kakanumporn.nakarin.flightreportsmaker.adapter.ReportAdapter;
+import com.kakanumporn.nakarin.flightreportsmaker.model.Report;
 
 /**
  * Created by Belizwp on 7/9/2017.
@@ -22,8 +25,10 @@ import com.kakanumporn.nakarin.flightreportsmaker.adapter.ReportsAdapter;
 public class MainFragment extends Fragment {
 
     private RecyclerView rvReports;
-    private ReportsAdapter reportsAdapter;
+    private ReportAdapter reportsAdapter;
     private RecyclerView.LayoutManager layoutManager;
+    private DividerItemDecoration dividerItemDecoration;
+    private FloatingActionButton fab;
 
     public MainFragment() {
         super();
@@ -57,25 +62,33 @@ public class MainFragment extends Fragment {
     private void init(Bundle savedInstanceState) {
         // Init Fragment level's variable(s) here
         setHasOptionsMenu(true);
+        reportsAdapter = new ReportAdapter(getContext());
+        reportsAdapter.loadData();
     }
 
     @SuppressWarnings("UnusedParameters")
     private void initInstances(View rootView, Bundle savedInstanceState) {
         // bind view
         rvReports = rootView.findViewById(R.id.rvReports);
+        fab = rootView.findViewById(R.id.floatingActionButton);
 
         // setup view
         layoutManager = new LinearLayoutManager(getContext());
+        dividerItemDecoration = new DividerItemDecoration(rvReports.getContext(),
+                DividerItemDecoration.VERTICAL);
+
         rvReports.setLayoutManager(layoutManager);
-        reportsAdapter = new ReportsAdapter();
+        rvReports.addItemDecoration(dividerItemDecoration);
         rvReports.setAdapter(reportsAdapter);
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvReports.getContext(), DividerItemDecoration.VERTICAL);
-        rvReports.addItemDecoration(dividerItemDecoration);
+        fab.setOnClickListener(fabOnClickListener);
+    }
 
-        // set dataSet
-        // reportsAdapter.setDataSet(); TODO: set data to reports adapter
-        reportsAdapter.notifyDataSetChanged();
+    private void addReport() {
+        // TODO: add real report data
+
+        reportsAdapter.addReport(new Report("1", "ADD", "Jul-9-17 5:35 PM"));
+        Toast.makeText(getContext(), "Report Added", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -95,6 +108,7 @@ public class MainFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         // Save Instance State here
+        outState.putBundle("reportAdapter", reportsAdapter.onSaveInstanceState());
     }
 
     /*
@@ -103,6 +117,7 @@ public class MainFragment extends Fragment {
     @SuppressWarnings("UnusedParameters")
     private void onRestoreInstanceState(Bundle savedInstanceState) {
         // Restore Instance State here
+        reportsAdapter.onRestoreInstanceState(savedInstanceState.getBundle("reportAdapter"));
     }
 
     @Override
@@ -110,4 +125,14 @@ public class MainFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_main, menu);
     }
+
+    /***********
+     * Listener
+     ***********/
+    View.OnClickListener fabOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            addReport();
+        }
+    };
 }

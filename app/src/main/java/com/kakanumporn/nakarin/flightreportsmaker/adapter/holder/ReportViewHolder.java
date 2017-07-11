@@ -2,8 +2,10 @@ package com.kakanumporn.nakarin.flightreportsmaker.adapter.holder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.daimajia.swipe.SwipeLayout;
 import com.kakanumporn.nakarin.flightreportsmaker.R;
 
 /**
@@ -12,10 +14,18 @@ import com.kakanumporn.nakarin.flightreportsmaker.R;
 
 public class ReportViewHolder extends RecyclerView.ViewHolder {
 
-    public TextView textView;
+    public SwipeLayout swipeLayout;
+    public TextView tvTitle;
+    public TextView tvLastEdit;
+    public Button btnExport;
+    public Button btnDelete;
 
     public ReportViewHolder(View itemView) {
         super(itemView);
-        textView = itemView.findViewById(R.id.tvTitle);
+        swipeLayout = itemView.findViewById(R.id.swipeLayout);
+        tvTitle = itemView.findViewById(R.id.tvTitle);
+        tvLastEdit = itemView.findViewById(R.id.tvLastEdit);
+        btnExport = itemView.findViewById(R.id.btnExport);
+        btnDelete = itemView.findViewById(R.id.btnDelete);
     }
 }
