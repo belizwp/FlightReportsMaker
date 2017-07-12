@@ -9,7 +9,18 @@ import android.os.Parcelable;
 
 public class Report implements Parcelable {
 
-    private String id;
+    //Database
+    public static final String DATABASE_NAME = "flight_reports.db";
+    public static final int DATABASE_VERSION = 1;
+    public static final String TABLE = "reports";
+
+    public class Column {
+        public static final String ID = "id";
+        public static final String TITLE = "title";
+        public static final String LAST_EDIT = "last_edit";
+    }
+
+    private int id;
     private String title;
     private String lastEdit;
 
@@ -17,14 +28,15 @@ public class Report implements Parcelable {
 
     }
 
-    public Report(String id, String title, String lastEdit) {
+    public Report(int id, String title, String lastEdit) {
         this.id = id;
         this.title = title;
         this.lastEdit = lastEdit;
     }
 
+
     protected Report(Parcel in) {
-        id = in.readString();
+        id = in.readInt();
         title = in.readString();
         lastEdit = in.readString();
     }
@@ -41,11 +53,23 @@ public class Report implements Parcelable {
         }
     };
 
-    public String getId() {
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(title);
+        parcel.writeString(lastEdit);
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -63,17 +87,5 @@ public class Report implements Parcelable {
 
     public void setLastEdit(String lastEdit) {
         this.lastEdit = lastEdit;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(id);
-        parcel.writeString(title);
-        parcel.writeString(lastEdit);
     }
 }

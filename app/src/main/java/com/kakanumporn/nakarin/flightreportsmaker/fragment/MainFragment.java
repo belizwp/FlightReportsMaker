@@ -87,7 +87,7 @@ public class MainFragment extends Fragment {
     private void addReport() {
         // TODO: add real report data
 
-        reportsAdapter.addReport(new Report("1", "ADD", "Jul-9-17 5:35 PM"));
+        reportsAdapter.addReport(new Report(0, "ADD", "Jul-9-17 5:35 PM"));
         Toast.makeText(getContext(), "Report Added", Toast.LENGTH_SHORT).show();
     }
 

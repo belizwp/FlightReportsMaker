@@ -34,6 +34,7 @@
 
     <!-- Surface View Start -->
     <LinearLayout
+        android:id="@+id/surface_wrapper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/ripple"

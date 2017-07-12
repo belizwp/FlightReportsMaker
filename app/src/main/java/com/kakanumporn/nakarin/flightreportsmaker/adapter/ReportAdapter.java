@@ -13,7 +13,9 @@ import android.widget.Toast;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.kakanumporn.nakarin.flightreportsmaker.R;
 import com.kakanumporn.nakarin.flightreportsmaker.adapter.holder.ReportViewHolder;
+import com.kakanumporn.nakarin.flightreportsmaker.manager.Contextor;
 import com.kakanumporn.nakarin.flightreportsmaker.model.Report;
+import com.kakanumporn.nakarin.flightreportsmaker.util.DBHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,12 +26,19 @@ import java.util.List;
 
 public class ReportAdapter extends RecyclerSwipeAdapter {
 
+    static final int DATA_ADD = 0;
+    static final int DATA_DELETE = 1;
+
     Context context;
     ArrayList<Report> reportList;
+    DBHelper dbHelper;
 
     public ReportAdapter(Context context) {
         this.context = context;
         this.reportList = new ArrayList<>();
+
+        //user application context for legit data management
+        this.dbHelper = new DBHelper(Contextor.getInstance().getContext());
     }
 
     @Override
@@ -57,15 +66,19 @@ public class ReportAdapter extends RecyclerSwipeAdapter {
     }
 
     public void loadData() {
-        // TODO: load real reports data
-        reportList.add(new Report("0", "AAA", "Jul-7-17 5:42 PM"));
-        reportList.add(new Report("0", "BBB", "Jul-7-17 5:42 PM"));
-        reportList.add(new Report("0", "CCC", "Jul-7-17 5:42 PM"));
-        reportList.add(new Report("0", "DDD", "Jul-7-17 5:42 PM"));
+        reportList.addAll(dbHelper.getReportList());
     }
 
-    private void saveData() {
-        // TODO: save reports data to persistent storage;
+    private void saveData(Report report, int mode) {
+        // save reports data to persistent storage;
+        switch (mode) {
+            case DATA_ADD: {
+                dbHelper.addReport(report);
+            }
+            case DATA_DELETE: {
+                dbHelper.deleteReport(report);
+            }
+        }
     }
 
     public Bundle onSaveInstanceState() {
@@ -81,12 +94,13 @@ public class ReportAdapter extends RecyclerSwipeAdapter {
 
     private void setupReportViewHolder(RecyclerView.ViewHolder holder, final int position) {
         ReportViewHolder reportViewHolder = (ReportViewHolder) holder;
-        reportViewHolder.tvTitle
-                .setText(reportList.get(position).getTitle());
-        reportViewHolder.tvLastEdit
-                .setText(reportList.get(position).getLastEdit());
 
         final Report report = reportList.get(position);
+
+        reportViewHolder.tvTitle
+                .setText("ID: " + report.getId() + " - " + report.getTitle());
+        reportViewHolder.tvLastEdit
+                .setText(report.getLastEdit());
 
         View.OnClickListener reportItemButtonListener = new View.OnClickListener() {
             @Override
@@ -100,33 +114,46 @@ public class ReportAdapter extends RecyclerSwipeAdapter {
         };
         reportViewHolder.btnDelete.setOnClickListener(reportItemButtonListener);
         reportViewHolder.btnExport.setOnClickListener(reportItemButtonListener);
+
+        reportViewHolder.surface.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openReport(report);
+            }
+        });
     }
 
     public void addReport(Report report) {
+        saveData(report, DATA_ADD);
         reportList.add(report);
-        saveData();
         notifyItemInserted(reportList.size() - 1);
     }
 
     public void addReport(int i, Report report) {
+        saveData(report, DATA_ADD);
         reportList.add(i, report);
-        saveData();
         notifyItemInserted(i);
     }
 
     public void removeReport(Report report) {
         int index = reportList.indexOf(report);
         String title = report.getTitle();
+
+        saveData(report, DATA_DELETE);
         reportList.remove(report);
-        saveData();
         notifyItemRemoved(index);
+
         Toast.makeText(context, "Report " + title + " deleted", Toast.LENGTH_SHORT).show();
     }
 
     public void exportReport(Report report) {
-        // TODO: export report
-        String title = report.getTitle();
-        Toast.makeText(context, "Export " + title, Toast.LENGTH_SHORT).show();
+        // TODO: send to export activity
+        Toast.makeText(context, "Export " + report.getTitle(), Toast.LENGTH_SHORT).show();
+    }
+
+    public void openReport(Report report) {
+        // TODO: send to report info activity
+        Toast.makeText(context, "Open " + report.getTitle(), Toast.LENGTH_SHORT).show();
     }
 
     public List<Report> getReportList() {
@@ -147,12 +174,7 @@ public class ReportAdapter extends RecyclerSwipeAdapter {
                         removeReport(report);
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                    }
-                })
+                .setNegativeButton("No", null)
                 .show();
     }
 }
