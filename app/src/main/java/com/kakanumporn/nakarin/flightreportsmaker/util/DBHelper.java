@@ -90,4 +90,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
         sqLiteDatabase.close();
     }
+
+    public void updateReport(Report report) {
+        sqLiteDatabase = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(Report.Column.TITLE, report.getTitle());
+        values.put(Report.Column.LAST_EDIT, report.getLastEdit());
+
+        sqLiteDatabase.update(Report.TABLE, values, Report.Column.ID + " = " + report.getId(), null);
+    }
 }

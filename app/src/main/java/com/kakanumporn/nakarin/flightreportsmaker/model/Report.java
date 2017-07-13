@@ -28,6 +28,10 @@ public class Report implements Parcelable {
 
     }
 
+    public Report(String title) {
+        this.title = title;
+    }
+
     public Report(int id, String title, String lastEdit) {
         this.id = id;
         this.title = title;

@@ -1,9 +1,12 @@
 package com.kakanumporn.nakarin.flightreportsmaker.fragment;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,11 +15,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.kakanumporn.nakarin.flightreportsmaker.R;
 import com.kakanumporn.nakarin.flightreportsmaker.adapter.ReportAdapter;
 import com.kakanumporn.nakarin.flightreportsmaker.model.Report;
+import com.kakanumporn.nakarin.flightreportsmaker.util.MyDate;
+
 
 /**
  * Created by Belizwp on 7/9/2017.
@@ -84,11 +91,30 @@ public class MainFragment extends Fragment {
         fab.setOnClickListener(fabOnClickListener);
     }
 
-    private void addReport() {
-        // TODO: add real report data
-
-        reportsAdapter.addReport(new Report(0, "ADD", "Jul-9-17 5:35 PM"));
+    private void addReport(String title) {
+        reportsAdapter.addReport(new Report(title));
         Toast.makeText(getContext(), "Report Added", Toast.LENGTH_SHORT).show();
+    }
+
+    private void showAddReportDialog() {
+        AlertDialog.Builder addReportDialog = new AlertDialog.Builder(getContext());
+        final EditText etReportTitle = new EditText(getContext());
+        etReportTitle.setText(MyDate.getDate("d/MMMM/yyyy"));
+        etReportTitle.requestFocus();
+
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(etReportTitle, InputMethodManager.SHOW_IMPLICIT);
+
+        addReportDialog.setTitle("Enter Report Title");
+        addReportDialog.setView(etReportTitle);
+        addReportDialog.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                addReport(etReportTitle.getText().toString());
+            }
+        });
+
+        addReportDialog.setNegativeButton("Cancel", null);
+        addReportDialog.show();
     }
 
     @Override
@@ -132,7 +158,7 @@ public class MainFragment extends Fragment {
     View.OnClickListener fabOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            addReport();
+            showAddReportDialog();
         }
     };
 }

@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
@@ -16,6 +18,7 @@ import com.kakanumporn.nakarin.flightreportsmaker.adapter.holder.ReportViewHolde
 import com.kakanumporn.nakarin.flightreportsmaker.manager.Contextor;
 import com.kakanumporn.nakarin.flightreportsmaker.model.Report;
 import com.kakanumporn.nakarin.flightreportsmaker.util.DBHelper;
+import com.kakanumporn.nakarin.flightreportsmaker.util.MyDate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +31,7 @@ public class ReportAdapter extends RecyclerSwipeAdapter {
 
     static final int DATA_ADD = 0;
     static final int DATA_DELETE = 1;
+    static final int DATA_UPDATE = 2;
 
     Context context;
     ArrayList<Report> reportList;
@@ -74,9 +78,15 @@ public class ReportAdapter extends RecyclerSwipeAdapter {
         switch (mode) {
             case DATA_ADD: {
                 dbHelper.addReport(report);
+                break;
             }
             case DATA_DELETE: {
                 dbHelper.deleteReport(report);
+                break;
+            }
+            case DATA_UPDATE: {
+                dbHelper.updateReport(report);
+                break;
             }
         }
     }
@@ -92,13 +102,61 @@ public class ReportAdapter extends RecyclerSwipeAdapter {
         reportList = savedInstanceState.getParcelableArrayList("reportList");
     }
 
+    public void addReport(Report report) {
+        saveData(report, DATA_ADD);
+        report.setLastEdit(MyDate.getDate("MMM d yy h:mm a"));
+        reportList.add(report);
+        notifyItemInserted(reportList.size() - 1);
+    }
+
+    public void addReport(int i, Report report) {
+        saveData(report, DATA_ADD);
+        reportList.add(i, report);
+        notifyItemInserted(i);
+    }
+
+    public void removeReport(Report report) {
+        int index = reportList.indexOf(report);
+        String title = report.getTitle();
+
+        saveData(report, DATA_DELETE);
+        reportList.remove(report);
+        notifyItemRemoved(index);
+
+        Toast.makeText(context, "Report " + title + " deleted", Toast.LENGTH_SHORT).show();
+    }
+
+    public void updateReport(Report report) {
+        report.setLastEdit(MyDate.getDate("MMM d yy h:mm a"));
+        saveData(report, DATA_UPDATE);
+        notifyItemChanged(reportList.indexOf(report));
+    }
+
+    public void exportReport(Report report) {
+        // TODO: send to export activity
+        Toast.makeText(context, "Export " + report.getTitle(), Toast.LENGTH_SHORT).show();
+    }
+
+    public void openReport(Report report) {
+        // TODO: send to report info activity
+        Toast.makeText(context, "Open " + report.getTitle(), Toast.LENGTH_SHORT).show();
+    }
+
+    public List<Report> getReportList() {
+        return reportList;
+    }
+
+    public void setReportList(ArrayList<Report> reportList) {
+        this.reportList = reportList;
+    }
+
     private void setupReportViewHolder(RecyclerView.ViewHolder holder, final int position) {
         ReportViewHolder reportViewHolder = (ReportViewHolder) holder;
 
         final Report report = reportList.get(position);
 
         reportViewHolder.tvTitle
-                .setText("ID: " + report.getId() + " - " + report.getTitle());
+                .setText(report.getTitle());
         reportViewHolder.tvLastEdit
                 .setText(report.getLastEdit());
 
@@ -121,47 +179,13 @@ public class ReportAdapter extends RecyclerSwipeAdapter {
                 openReport(report);
             }
         });
-    }
-
-    public void addReport(Report report) {
-        saveData(report, DATA_ADD);
-        reportList.add(report);
-        notifyItemInserted(reportList.size() - 1);
-    }
-
-    public void addReport(int i, Report report) {
-        saveData(report, DATA_ADD);
-        reportList.add(i, report);
-        notifyItemInserted(i);
-    }
-
-    public void removeReport(Report report) {
-        int index = reportList.indexOf(report);
-        String title = report.getTitle();
-
-        saveData(report, DATA_DELETE);
-        reportList.remove(report);
-        notifyItemRemoved(index);
-
-        Toast.makeText(context, "Report " + title + " deleted", Toast.LENGTH_SHORT).show();
-    }
-
-    public void exportReport(Report report) {
-        // TODO: send to export activity
-        Toast.makeText(context, "Export " + report.getTitle(), Toast.LENGTH_SHORT).show();
-    }
-
-    public void openReport(Report report) {
-        // TODO: send to report info activity
-        Toast.makeText(context, "Open " + report.getTitle(), Toast.LENGTH_SHORT).show();
-    }
-
-    public List<Report> getReportList() {
-        return reportList;
-    }
-
-    public void setReportList(ArrayList<Report> reportList) {
-        this.reportList = reportList;
+        reportViewHolder.surface.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                showEditReportTittleDialog(report);
+                return true;
+            }
+        });
     }
 
     private void showDeleteComfirmationDialog(final Report report) {
@@ -176,5 +200,27 @@ public class ReportAdapter extends RecyclerSwipeAdapter {
                 })
                 .setNegativeButton("No", null)
                 .show();
+    }
+
+    private void showEditReportTittleDialog(final Report report) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+        final EditText etReportTitle = new EditText(context);
+        etReportTitle.setText(report.getTitle());
+        etReportTitle.requestFocus();
+
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(etReportTitle, InputMethodManager.SHOW_IMPLICIT);
+
+        dialog.setTitle("Enter Report Title");
+        dialog.setView(etReportTitle);
+        dialog.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                report.setTitle(etReportTitle.getText().toString());
+                updateReport(report);
+            }
+        });
+
+        dialog.setNegativeButton("Cancel", null);
+        dialog.show();
     }
 }
