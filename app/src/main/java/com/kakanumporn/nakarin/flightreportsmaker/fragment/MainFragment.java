@@ -2,6 +2,7 @@ package com.kakanumporn.nakarin.flightreportsmaker.fragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -13,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -20,6 +22,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.kakanumporn.nakarin.flightreportsmaker.R;
+import com.kakanumporn.nakarin.flightreportsmaker.activity.SettingActivity;
 import com.kakanumporn.nakarin.flightreportsmaker.adapter.ReportAdapter;
 import com.kakanumporn.nakarin.flightreportsmaker.model.Report;
 import com.kakanumporn.nakarin.flightreportsmaker.util.MyDate;
@@ -93,6 +96,7 @@ public class MainFragment extends Fragment {
 
     private void addReport(String title) {
         reportsAdapter.addReport(new Report(title));
+        rvReports.smoothScrollToPosition(reportsAdapter.getItemCount() - 1);
         Toast.makeText(getContext(), "Report Added", Toast.LENGTH_SHORT).show();
     }
 
@@ -150,6 +154,16 @@ public class MainFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_main, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_menu_setting) {
+            Intent intent = new Intent(getContext(), SettingActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return false;
     }
 
     /***********

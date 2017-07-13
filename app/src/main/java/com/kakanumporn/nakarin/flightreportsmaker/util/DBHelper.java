@@ -70,7 +70,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return reportList;
     }
 
-    public void addReport(Report report) {
+    public long addReport(Report report) {
         sqLiteDatabase = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -78,9 +78,11 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(Report.Column.TITLE, report.getTitle());
         values.put(Report.Column.LAST_EDIT, report.getLastEdit());
 
-        sqLiteDatabase.insert(Report.TABLE, null, values);
+        long id = sqLiteDatabase.insert(Report.TABLE, null, values);
 
         sqLiteDatabase.close();
+
+        return id;
     }
 
     public void deleteReport(Report report) {

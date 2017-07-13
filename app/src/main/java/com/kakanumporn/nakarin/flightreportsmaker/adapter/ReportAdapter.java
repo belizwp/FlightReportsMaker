@@ -2,6 +2,7 @@ package com.kakanumporn.nakarin.flightreportsmaker.adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.kakanumporn.nakarin.flightreportsmaker.R;
+import com.kakanumporn.nakarin.flightreportsmaker.activity.ReportActivity;
 import com.kakanumporn.nakarin.flightreportsmaker.adapter.holder.ReportViewHolder;
 import com.kakanumporn.nakarin.flightreportsmaker.manager.Contextor;
 import com.kakanumporn.nakarin.flightreportsmaker.model.Report;
@@ -77,7 +79,8 @@ public class ReportAdapter extends RecyclerSwipeAdapter {
         // save reports data to persistent storage;
         switch (mode) {
             case DATA_ADD: {
-                dbHelper.addReport(report);
+                int id = (int) dbHelper.addReport(report);
+                report.setId(id);
                 break;
             }
             case DATA_DELETE: {
@@ -103,23 +106,24 @@ public class ReportAdapter extends RecyclerSwipeAdapter {
     }
 
     public void addReport(Report report) {
-        saveData(report, DATA_ADD);
         report.setLastEdit(MyDate.getDate("MMM d yy h:mm a"));
+        saveData(report, DATA_ADD);
         reportList.add(report);
         notifyItemInserted(reportList.size() - 1);
     }
 
     public void addReport(int i, Report report) {
+        report.setLastEdit(MyDate.getDate("MMM d yy h:mm a"));
         saveData(report, DATA_ADD);
         reportList.add(i, report);
         notifyItemInserted(i);
     }
 
     public void removeReport(Report report) {
+        saveData(report, DATA_DELETE);
         int index = reportList.indexOf(report);
         String title = report.getTitle();
 
-        saveData(report, DATA_DELETE);
         reportList.remove(report);
         notifyItemRemoved(index);
 
@@ -138,8 +142,10 @@ public class ReportAdapter extends RecyclerSwipeAdapter {
     }
 
     public void openReport(Report report) {
-        // TODO: send to report info activity
-        Toast.makeText(context, "Open " + report.getTitle(), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(context, ReportActivity.class);
+        intent.putExtra("id", report.getId());
+        intent.putExtra("title", report.getTitle());
+        context.startActivity(intent);
     }
 
     public List<Report> getReportList() {
