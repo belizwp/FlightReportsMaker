@@ -7,13 +7,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cleveroad.adaptivetablelayout.AdaptiveTableLayout;
 import com.kakanumporn.nakarin.flightreportsmaker.R;
+import com.kakanumporn.nakarin.flightreportsmaker.adapter.TableAdapter;
 
 /**
  * Created by nuuneoi on 11/16/2014.
  */
 @SuppressWarnings("unused")
 public class ReportFragment extends Fragment {
+
+    private AdaptiveTableLayout tableLayout;
+    private TableAdapter tableAdapter;
 
     public ReportFragment() {
         super();
@@ -51,6 +56,10 @@ public class ReportFragment extends Fragment {
     @SuppressWarnings("UnusedParameters")
     private void initInstances(View rootView, Bundle savedInstanceState) {
         // Init 'View' instance(s) with rootView.findViewById here
+        tableLayout = rootView.findViewById(R.id.tableLayout);
+        tableAdapter = new TableAdapter(getContext());
+
+        tableLayout.setAdapter(tableAdapter);
     }
 
     @Override
