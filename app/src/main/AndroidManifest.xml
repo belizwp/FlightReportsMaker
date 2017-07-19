@@ -18,7 +18,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.ReportActivity" />
-        <activity android:name=".activity.SettingActivity"></activity>
+        <activity android:name=".activity.SettingActivity" />
+        <activity android:name=".activity.FormActivity"></activity>
     </application>
 
 </manifest>

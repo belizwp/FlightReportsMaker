@@ -1,15 +1,144 @@
 package com.kakanumporn.nakarin.flightreportsmaker.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Belizwp on 7/19/2017.
  */
 
-public class ReportRecord {
+public class ReportRecord implements Parcelable {
 
     //Database
     public static final String DATABASE_NAME = "report_detail.db";
     public static final int DATABASE_VERSION = 1;
     public static final String TABLE = "report_detail";
+
+    protected ReportRecord(Parcel in) {
+        id = in.readLong();
+        reportId = in.readLong();
+        ac = in.readString();
+        depDate = in.readString();
+        depFlight = in.readString();
+        dep = in.readString();
+        depDelayCodeA = in.readString();
+        depDelayMinA = in.readInt();
+        depDelayCodeB = in.readString();
+        depDelayMinB = in.readInt();
+        depDelayTotalMin = in.readInt();
+        depAdult = in.readInt();
+        depChd = in.readInt();
+        depInf = in.readInt();
+        depTotal = in.readInt();
+        touchDown = in.readString();
+        blockIn = in.readString();
+        arrDate = in.readString();
+        arrFlight = in.readString();
+        arr = in.readString();
+        offBlock = in.readString();
+        airborne = in.readString();
+        arrDelayCodeA = in.readString();
+        arrDelayMinA = in.readInt();
+        arrDelayCodeB = in.readString();
+        arrDelayMinB = in.readInt();
+        arrDelayTotalMin = in.readString();
+        arrAdult = in.readInt();
+        arrChd = in.readInt();
+        arrInf = in.readInt();
+        arrTotal = in.readInt();
+        bagWeight = in.readInt();
+        totalTrafficLoad = in.readInt();
+        underloadBeforeLMC = in.readInt();
+        allowedTrafficLoad = in.readInt();
+        specialMeal = in.readString();
+        totalMeal = in.readInt();
+        aeroBridge = in.readString();
+        start = in.readString();
+        end = in.readString();
+        gseRq = in.readString();
+        invNo = in.readString();
+        refuelReceipt = in.readInt();
+        invFuel = in.readInt();
+        temp = in.readFloat();
+        actualDensity = in.readFloat();
+        basicPrice = in.readString();
+        fees = in.readString();
+        amount = in.readString();
+        gha = in.readString();
+        remark = in.readString();
+    }
+
+    public static final Creator<ReportRecord> CREATOR = new Creator<ReportRecord>() {
+        @Override
+        public ReportRecord createFromParcel(Parcel in) {
+            return new ReportRecord(in);
+        }
+
+        @Override
+        public ReportRecord[] newArray(int size) {
+            return new ReportRecord[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeLong(id);
+        parcel.writeLong(reportId);
+        parcel.writeString(ac);
+        parcel.writeString(depDate);
+        parcel.writeString(depFlight);
+        parcel.writeString(dep);
+        parcel.writeString(depDelayCodeA);
+        parcel.writeInt(depDelayMinA);
+        parcel.writeString(depDelayCodeB);
+        parcel.writeInt(depDelayMinB);
+        parcel.writeInt(depDelayTotalMin);
+        parcel.writeInt(depAdult);
+        parcel.writeInt(depChd);
+        parcel.writeInt(depInf);
+        parcel.writeInt(depTotal);
+        parcel.writeString(touchDown);
+        parcel.writeString(blockIn);
+        parcel.writeString(arrDate);
+        parcel.writeString(arrFlight);
+        parcel.writeString(arr);
+        parcel.writeString(offBlock);
+        parcel.writeString(airborne);
+        parcel.writeString(arrDelayCodeA);
+        parcel.writeInt(arrDelayMinA);
+        parcel.writeString(arrDelayCodeB);
+        parcel.writeInt(arrDelayMinB);
+        parcel.writeString(arrDelayTotalMin);
+        parcel.writeInt(arrAdult);
+        parcel.writeInt(arrChd);
+        parcel.writeInt(arrInf);
+        parcel.writeInt(arrTotal);
+        parcel.writeInt(bagWeight);
+        parcel.writeInt(totalTrafficLoad);
+        parcel.writeInt(underloadBeforeLMC);
+        parcel.writeInt(allowedTrafficLoad);
+        parcel.writeString(specialMeal);
+        parcel.writeInt(totalMeal);
+        parcel.writeString(aeroBridge);
+        parcel.writeString(start);
+        parcel.writeString(end);
+        parcel.writeString(gseRq);
+        parcel.writeString(invNo);
+        parcel.writeInt(refuelReceipt);
+        parcel.writeInt(invFuel);
+        parcel.writeFloat(temp);
+        parcel.writeFloat(actualDensity);
+        parcel.writeString(basicPrice);
+        parcel.writeString(fees);
+        parcel.writeString(amount);
+        parcel.writeString(gha);
+        parcel.writeString(remark);
+    }
 
     public class Column {
         /******
