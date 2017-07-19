@@ -9,7 +9,7 @@ import com.kakanumporn.nakarin.flightreportsmaker.fragment.ReportFragment;
 
 public class ReportActivity extends AppCompatActivity {
 
-    private int id;
+    private long id;
     private String title;
 
     @Override
@@ -22,15 +22,15 @@ public class ReportActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.contentContainer, ReportFragment.newInstance())
+                    .add(R.id.contentContainer, ReportFragment.newInstance(id))
                     .commit();
         }
     }
 
     private void initInstances() {
         Intent intent = getIntent();
-        id = intent.getIntExtra("id", 0);
+        id = intent.getLongExtra("id", 0);
         title = intent.getStringExtra("title");
-        setTitle(title);
+        setTitle(title + " ID: " + id);
     }
 }

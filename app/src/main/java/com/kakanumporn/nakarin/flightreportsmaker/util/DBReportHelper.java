@@ -14,11 +14,11 @@ import java.util.ArrayList;
  * Created by Belizwp on 7/12/2017.
  */
 
-public class DBHelper extends SQLiteOpenHelper {
+public class DBReportHelper extends SQLiteOpenHelper {
 
     private SQLiteDatabase sqLiteDatabase;
 
-    public DBHelper(Context context) {
+    public DBReportHelper(Context context) {
         super(context, Report.DATABASE_NAME, null, Report.DATABASE_VERSION);
     }
 
@@ -36,9 +36,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        String DROP_FRIEND_TABLE = "DROP TABLE IF EXISTS reports";
+        String DROP_REPORTS_TABLE = "DROP TABLE IF EXISTS " + Report.TABLE;
 
-        sqLiteDatabase.execSQL(DROP_FRIEND_TABLE);
+        sqLiteDatabase.execSQL(DROP_REPORTS_TABLE);
 
         onCreate(sqLiteDatabase);
     }
@@ -74,7 +74,7 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        //values.put(Report.Column.ID, friend.getId()); //Auto increment
+        //values.put(Report.Column.ID, report.getId()); //Auto increment
         values.put(Report.Column.TITLE, report.getTitle());
         values.put(Report.Column.LAST_EDIT, report.getLastEdit());
 

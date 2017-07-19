@@ -19,7 +19,7 @@ import com.kakanumporn.nakarin.flightreportsmaker.activity.ReportActivity;
 import com.kakanumporn.nakarin.flightreportsmaker.adapter.holder.ReportViewHolder;
 import com.kakanumporn.nakarin.flightreportsmaker.manager.Contextor;
 import com.kakanumporn.nakarin.flightreportsmaker.model.Report;
-import com.kakanumporn.nakarin.flightreportsmaker.util.DBHelper;
+import com.kakanumporn.nakarin.flightreportsmaker.util.DBReportHelper;
 import com.kakanumporn.nakarin.flightreportsmaker.util.MyDate;
 
 import java.util.ArrayList;
@@ -31,20 +31,20 @@ import java.util.List;
 
 public class ReportAdapter extends RecyclerSwipeAdapter {
 
-    static final int DATA_ADD = 0;
-    static final int DATA_DELETE = 1;
-    static final int DATA_UPDATE = 2;
+    private static final int DATA_ADD = 0;
+    private static final int DATA_DELETE = 1;
+    private static final int DATA_UPDATE = 2;
 
-    Context context;
-    ArrayList<Report> reportList;
-    DBHelper dbHelper;
+    private Context context;
+    private ArrayList<Report> reportList;
+    private DBReportHelper dbHelper;
 
     public ReportAdapter(Context context) {
         this.context = context;
         this.reportList = new ArrayList<>();
 
         //user application context for legit data management
-        this.dbHelper = new DBHelper(Contextor.getInstance().getContext());
+        this.dbHelper = new DBReportHelper(Contextor.getInstance().getContext());
     }
 
     @Override
@@ -79,7 +79,7 @@ public class ReportAdapter extends RecyclerSwipeAdapter {
         // save reports data to persistent storage;
         switch (mode) {
             case DATA_ADD: {
-                int id = (int) dbHelper.addReport(report);
+                long id = dbHelper.addReport(report);
                 report.setId(id);
                 break;
             }

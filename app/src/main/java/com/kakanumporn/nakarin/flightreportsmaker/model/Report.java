@@ -20,7 +20,7 @@ public class Report implements Parcelable {
         public static final String LAST_EDIT = "last_edit";
     }
 
-    private int id;
+    private long id;
     private String title;
     private String lastEdit;
 
@@ -32,7 +32,7 @@ public class Report implements Parcelable {
         this.title = title;
     }
 
-    public Report(int id, String title, String lastEdit) {
+    public Report(long id, String title, String lastEdit) {
         this.id = id;
         this.title = title;
         this.lastEdit = lastEdit;
@@ -40,7 +40,7 @@ public class Report implements Parcelable {
 
 
     protected Report(Parcel in) {
-        id = in.readInt();
+        id = in.readLong();
         title = in.readString();
         lastEdit = in.readString();
     }
@@ -64,16 +64,16 @@ public class Report implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(id);
+        parcel.writeLong(id);
         parcel.writeString(title);
         parcel.writeString(lastEdit);
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
