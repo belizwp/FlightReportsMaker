@@ -55,9 +55,15 @@ public class TableAdapter extends LinkedAdaptiveTableAdapter<ViewHolderImpl> {
         records.add(record);
     }
 
+    public void updateRecord(ReportRecord record) {
+        record.setReportId(id);
+        dbHelper.updateRecord(record);
+        records.remove(record);
+    }
+
     @Override
     public int getRowCount() {
-        return records.size() + 1;
+        return records.size() + 1; // row header reserve
     }
 
     @Override

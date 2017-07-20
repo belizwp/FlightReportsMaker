@@ -103,6 +103,7 @@ public class FormFragment extends Fragment {
     public void finish() {
         FormActivity activity = (FormActivity) getActivity();
         ReportRecord record = new ReportRecord();
+        record.setId(id);
         record.setAc(etTest.getText().toString());
         activity.sendRecord(record);
     }

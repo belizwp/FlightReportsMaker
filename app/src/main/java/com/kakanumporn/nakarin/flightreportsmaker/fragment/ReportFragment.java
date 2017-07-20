@@ -18,6 +18,7 @@ import com.kakanumporn.nakarin.flightreportsmaker.activity.FormActivity;
 import com.kakanumporn.nakarin.flightreportsmaker.adapter.TableAdapter;
 import com.kakanumporn.nakarin.flightreportsmaker.model.ReportRecord;
 import com.kakanumporn.nakarin.flightreportsmaker.util.MyRequestCode;
+import com.kakanumporn.nakarin.flightreportsmaker.util.ScreenUtil;
 
 /**
  * Created by nuuneoi on 11/16/2014.
@@ -70,9 +71,8 @@ public class ReportFragment extends Fragment {
     private void initInstances(View rootView, Bundle savedInstanceState) {
         // Init 'View' instance(s) with rootView.findViewById here
         tableLayout = rootView.findViewById(R.id.tableLayout);
-        tableAdapter = new TableAdapter(getContext(), id);
-        tableAdapter.setOnItemLongClickListener(tableAdapterListener);
-        tableLayout.setAdapter(tableAdapter);
+
+        initAdapter();
 
         fab = rootView.findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(fabOnClickListener);
@@ -124,7 +124,7 @@ public class ReportFragment extends Fragment {
             Toast.makeText(getContext(), "Edit Record", Toast.LENGTH_SHORT).show();
             // TODO: send to form activity with record id
             Intent intent = new Intent(getContext(), FormActivity.class);
-            intent.putExtra("id", tableAdapter.getRecord(row - 1).getId());
+            intent.putExtra("id", tableAdapter.getRecord(row).getId());
             startActivityForResult(intent, MyRequestCode.EDIT_FLIGHT);
         }
 
@@ -136,15 +136,16 @@ public class ReportFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // TODO: handle activity result
         if (requestCode == MyRequestCode.ADD_FLIGHT) {
             if (resultCode == Activity.RESULT_OK) {
                 ReportRecord record = data.getParcelableExtra("record");
                 if (record != null) {
-                    Toast.makeText(getContext(), "Record Added " + id, Toast.LENGTH_SHORT).show();
                     tableAdapter.addRecord(record);
-                    tableLayout.notifyDataSetChanged();
-                    // TODO: refresh data
+                    // tableAdapter.notifyDataSetChanged(); // it's not work
+                    Toast.makeText(getContext(), "Record Added " + id, Toast.LENGTH_SHORT).show();
+                    // TODO: improve data refresh
+                    initAdapter(); // re-init for now
+                    tableLayout.scrollBy(0, 0);
                 }
             }
             if (resultCode == Activity.RESULT_CANCELED) {
@@ -152,12 +153,25 @@ public class ReportFragment extends Fragment {
             }
         } else if (requestCode == MyRequestCode.EDIT_FLIGHT) {
             if (resultCode == Activity.RESULT_OK) {
-                Toast.makeText(getContext(), "Record Edited", Toast.LENGTH_SHORT).show();
-                // TODO: update record
+                ReportRecord record = data.getParcelableExtra("record");
+                if (record != null) {
+                    tableAdapter.updateRecord(record);
+                    tableAdapter.notifyDataSetChanged(); // it's not work
+                    Toast.makeText(getContext(), "Record " + record.getId() + " Edited ", Toast.LENGTH_SHORT).show();
+                    // TODO: improve data refresh
+                    initAdapter(); // re-init for now
+                    tableLayout.scrollBy(0, 0);
+                }
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 Toast.makeText(getContext(), "Discard Change", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void initAdapter() {
+        tableAdapter = new TableAdapter(getContext(), id);
+        tableAdapter.setOnItemLongClickListener(tableAdapterListener);
+        tableLayout.setAdapter(tableAdapter);
     }
 }

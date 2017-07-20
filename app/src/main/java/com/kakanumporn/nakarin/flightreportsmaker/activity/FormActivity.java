@@ -31,7 +31,7 @@ public class FormActivity extends AppCompatActivity {
     private void initInstances() {
         Intent intent = getIntent();
         id = intent.getLongExtra("id", 0);
-        setTitle(id == 0 ? "Add Flight" : "Edit Flight");
+        setTitle(id == 0 ? "Add Flight ID:" + id : "Edit Flight ID:" + id);
     }
 
     public void sendRecord(ReportRecord record) {

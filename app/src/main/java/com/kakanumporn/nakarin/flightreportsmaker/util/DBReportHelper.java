@@ -101,5 +101,7 @@ public class DBReportHelper extends SQLiteOpenHelper {
         values.put(Report.Column.LAST_EDIT, report.getLastEdit());
 
         sqLiteDatabase.update(Report.TABLE, values, Report.Column.ID + " = " + report.getId(), null);
+
+        sqLiteDatabase.close();
     }
 }

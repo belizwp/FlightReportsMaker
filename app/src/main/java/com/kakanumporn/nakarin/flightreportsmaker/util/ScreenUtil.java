@@ -2,7 +2,12 @@ package com.kakanumporn.nakarin.flightreportsmaker.util;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Point;
 import android.util.DisplayMetrics;
+import android.view.Display;
+import android.view.WindowManager;
+
+import com.kakanumporn.nakarin.flightreportsmaker.manager.Contextor;
 
 /**
  * Created by Belizwp on 7/19/2017.
@@ -36,6 +41,22 @@ public class ScreenUtil {
         DisplayMetrics metrics = resources.getDisplayMetrics();
         float dp = px / ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
         return dp;
+    }
+
+    public static int getScreenWidth() {
+        WindowManager wm = (WindowManager) Contextor.getInstance().getContext().getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        return size.x;
+    }
+
+    public static int getScreenHeight() {
+        WindowManager wm = (WindowManager) Contextor.getInstance().getContext().getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        return size.y;
     }
 
 }

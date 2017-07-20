@@ -292,4 +292,81 @@ public class DBReportRecordHelper extends SQLiteOpenHelper {
 
         return id;
     }
+
+    public void updateRecord(ReportRecord record) {
+        sqLiteDatabase = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(Column.REPORT_ID, record.getReportId());
+
+        // aircraft
+        values.put(Column.AC, record.getAc());
+
+        // departure info
+        values.put(Column.DEP_DATE, record.getDepDate());
+        values.put(Column.DEP_FLIGHT, record.getDepFlight());
+        values.put(Column.DEP, record.getDep());
+        values.put(Column.DEP_DELAY_CODE_A, record.getDepDelayCodeA());
+        values.put(Column.DEP_DELAY_MIN_A, record.getDepDelayMinA());
+        values.put(Column.DEP_DELAY_CODE_B, record.getDepDelayCodeB());
+        values.put(Column.DEP_DELAY_MIN_B, record.getDepDelayMinB());
+        values.put(Column.DEP_DELAY_TOTAL_MIN, record.getDepDelayTotalMin());
+        values.put(Column.DEP_ADULT, record.getDepAdult());
+        values.put(Column.DEP_CHD, record.getDepChd());
+        values.put(Column.DEP_INF, record.getDepInf());
+        values.put(Column.DEP_TOTAL, record.getDepTotal());
+
+        // arrive info
+        values.put(Column.TOUCH_DOWN, record.getTouchDown());
+        values.put(Column.BLOCK_IN, record.getBlockIn());
+
+        values.put(Column.ARR_DATE, record.getArrDate());
+        values.put(Column.ARR_FLIGHT, record.getArrFlight());
+        values.put(Column.ARR, record.getArr());
+        values.put(Column.OFF_BLOCK, record.getOffBlock());
+        values.put(Column.AIRBORNE, record.getAirborne());
+        values.put(Column.ARR_DELAY_CODE_A, record.getArrDelayCodeA());
+        values.put(Column.ARR_DELAY_MIN_A, record.getArrDelayMinA());
+        values.put(Column.ARR_DELAY_CODE_B, record.getArrDelayCodeB());
+        values.put(Column.ARR_DELAY_MIN_B, record.getArrDelayMinB());
+        values.put(Column.ARR_DELAY_TOTAL_MIN, record.getArrDelayTotalMin());
+        values.put(Column.ARR_ADULT, record.getArrAdult());
+        values.put(Column.ARR_CHD, record.getArrChd());
+        values.put(Column.ARR_INF, record.getArrInf());
+        values.put(Column.ARR_TOTAL, record.getArrTotal());
+
+        // load
+        values.put(Column.BAG_WEIGHT, record.getBagWeight());
+        values.put(Column.TOTAL_TRAFFIC_LOAD, record.getTotalTrafficLoad());
+        values.put(Column.UNDERLOAD_BEFORE_LMC, record.getUnderloadBeforeLMC());
+        values.put(Column.ALLOWED_TRAFFIC_LOAD, record.getAllowedTrafficLoad());
+
+        // meal
+        values.put(Column.SPECIAL_MEAL, record.getSpecialMeal());
+        values.put(Column.TOTAL_MEAL, record.getTotalMeal());
+
+        // bridge
+        values.put(Column.AERO_BRIDGE, record.getAeroBridge());
+        values.put(Column.START, record.getStart());
+        values.put(Column.END, record.getEnd());
+        values.put(Column.GSE_RQ, record.getGseRq());
+
+        // fuel
+        values.put(Column.INV_NO, record.getInvNo());
+        values.put(Column.REFUEL_RECEIPT, record.getRefuelReceipt());
+        values.put(Column.INV_FUEL, record.getInvFuel());
+        values.put(Column.TEMP, record.getTemp());
+        values.put(Column.ACTUAL_DENSITY, record.getActualDensity());
+        values.put(Column.BASIC_PRICE, record.getBasicPrice());
+        values.put(Column.FEES, record.getFees());
+        values.put(Column.AMOUNT, record.getAmount());
+
+        // etc.
+        values.put(Column.GHA, record.getGha());
+        values.put(Column.REMARK, record.getRemark());
+
+        sqLiteDatabase.update(ReportRecord.TABLE, values, Column.ID + " = " + record.getId(), null);
+
+        sqLiteDatabase.close();
+    }
 }
