@@ -11,7 +11,7 @@ import com.kakanumporn.nakarin.flightreportsmaker.model.ReportRecord;
 
 public class FormActivity extends AppCompatActivity {
 
-    private long id;
+    private ReportRecord record;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,15 +23,19 @@ public class FormActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.contentContainer, FormFragment.newInstance(id))
+                    .add(R.id.contentContainer, FormFragment.newInstance(record))
                     .commit();
         }
     }
 
     private void initInstances() {
         Intent intent = getIntent();
-        id = intent.getLongExtra("id", 0);
-        setTitle(id == 0 ? "Add Flight ID:" + id : "Edit Flight ID:" + id);
+        record = intent.getParcelableExtra("record");
+        if (record == null) {
+            setTitle("Add Flight");
+        } else {
+            setTitle("Edit Flight ID:" + record.getId());
+        }
     }
 
     public void sendRecord(ReportRecord record) {

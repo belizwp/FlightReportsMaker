@@ -112,7 +112,6 @@ public class ReportFragment extends Fragment {
         @Override
         public void onClick(View view) {
             Toast.makeText(getContext(), "Add Record", Toast.LENGTH_SHORT).show();
-            // TODO: send to form activity
             Intent intent = new Intent(getContext(), FormActivity.class);
             startActivityForResult(intent, MyRequestCode.ADD_FLIGHT);
         }
@@ -122,9 +121,10 @@ public class ReportFragment extends Fragment {
         @Override
         public void onItemLongClick(int row, int column) {
             Toast.makeText(getContext(), "Edit Record", Toast.LENGTH_SHORT).show();
-            // TODO: send to form activity with record id
+            ReportRecord record = tableAdapter.getRecord(row);
+
             Intent intent = new Intent(getContext(), FormActivity.class);
-            intent.putExtra("id", tableAdapter.getRecord(row).getId());
+            intent.putExtra("record", record);
             startActivityForResult(intent, MyRequestCode.EDIT_FLIGHT);
         }
 

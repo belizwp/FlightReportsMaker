@@ -1,14 +1,15 @@
 package com.kakanumporn.nakarin.flightreportsmaker.fragment;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 
 import com.kakanumporn.nakarin.flightreportsmaker.R;
 import com.kakanumporn.nakarin.flightreportsmaker.activity.FormActivity;
@@ -20,8 +21,13 @@ import com.kakanumporn.nakarin.flightreportsmaker.model.ReportRecord;
 @SuppressWarnings("unused")
 public class FormFragment extends Fragment {
 
-    private long id;
-    private EditText etTest;
+    private static final int MODE_ADD = 0;
+    private static final int MODE_EDIT = 1;
+
+    private int mode;
+
+    private ReportRecord record;
+
     private Button btnSubmit;
 
     public FormFragment() {
@@ -29,10 +35,10 @@ public class FormFragment extends Fragment {
     }
 
     @SuppressWarnings("unused")
-    public static FormFragment newInstance(long id) {
+    public static FormFragment newInstance(ReportRecord record) {
         FormFragment fragment = new FormFragment();
         Bundle args = new Bundle();
-        args.putLong("id", id);
+        args.putParcelable("record", record);
         fragment.setArguments(args);
         return fragment;
     }
@@ -41,8 +47,6 @@ public class FormFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         init(savedInstanceState);
-
-        id = getArguments().getLong("id");
 
         if (savedInstanceState != null)
             onRestoreInstanceState(savedInstanceState);
@@ -58,12 +62,22 @@ public class FormFragment extends Fragment {
 
     private void init(Bundle savedInstanceState) {
         // Init Fragment level's variable(s) here
+        record = getArguments().getParcelable("record");
+
+        if (record != null) {
+            mode = MODE_EDIT;
+            fillForm();
+
+            setHasOptionsMenu(true);
+        } else {
+            record = new ReportRecord();
+            mode = MODE_ADD;
+        }
     }
 
     @SuppressWarnings("UnusedParameters")
     private void initInstances(View rootView, Bundle savedInstanceState) {
         // Init 'View' instance(s) with rootView.findViewById here
-        etTest = rootView.findViewById(R.id.etTest);
         btnSubmit = rootView.findViewById(R.id.btnSubmit);
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,11 +114,28 @@ public class FormFragment extends Fragment {
         // Restore Instance State here
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_form, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void fillForm() {
+        // TODO: fill form value by record
+    }
+
+    private void fillRecord() {
+        // TODO: fill record value by form
+    }
+
     public void finish() {
         FormActivity activity = (FormActivity) getActivity();
-        ReportRecord record = new ReportRecord();
-        record.setId(id);
-        record.setAc(etTest.getText().toString());
+        fillRecord();
         activity.sendRecord(record);
     }
 }

@@ -4,5 +4,6 @@
     <!-- MainFragment -->
     <string name="setting">Settings</string>
     <string name="about">About</string>
+    <string name="delete">DELETE</string>
 
 </resources>
