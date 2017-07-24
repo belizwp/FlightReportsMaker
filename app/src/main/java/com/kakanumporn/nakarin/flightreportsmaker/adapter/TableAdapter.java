@@ -58,7 +58,9 @@ public class TableAdapter extends LinkedAdaptiveTableAdapter<ViewHolderImpl> {
     public void updateRecord(ReportRecord record) {
         record.setReportId(id);
         dbHelper.updateRecord(record);
-        records.remove(record);
+        // TODO: require rowIndex for update record properly
+        records.clear();
+        loadData();
     }
 
     @Override

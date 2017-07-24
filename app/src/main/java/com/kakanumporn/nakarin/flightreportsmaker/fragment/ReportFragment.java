@@ -141,7 +141,7 @@ public class ReportFragment extends Fragment {
                 ReportRecord record = data.getParcelableExtra("record");
                 if (record != null) {
                     tableAdapter.addRecord(record);
-                    // tableAdapter.notifyDataSetChanged(); // it's not work
+                    // tableAdapter.notifyDataSetChanged(); // not work with addition row
                     Toast.makeText(getContext(), "Record Added " + id, Toast.LENGTH_SHORT).show();
                     // TODO: improve data refresh
                     initAdapter(); // re-init for now
@@ -156,11 +156,8 @@ public class ReportFragment extends Fragment {
                 ReportRecord record = data.getParcelableExtra("record");
                 if (record != null) {
                     tableAdapter.updateRecord(record);
-                    tableAdapter.notifyDataSetChanged(); // it's not work
+                    tableAdapter.notifyDataSetChanged();
                     Toast.makeText(getContext(), "Record " + record.getId() + " Edited ", Toast.LENGTH_SHORT).show();
-                    // TODO: improve data refresh
-                    initAdapter(); // re-init for now
-                    tableLayout.scrollBy(0, 0);
                 }
             }
             if (resultCode == Activity.RESULT_CANCELED) {
