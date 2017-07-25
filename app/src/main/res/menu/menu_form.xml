@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_menu_form"
+        android:id="@+id/action_menu_form_delete"
         android:title="@string/delete"
         app:showAsAction="always" />
 

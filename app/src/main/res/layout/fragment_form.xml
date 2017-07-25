@@ -68,22 +68,18 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Date"
-                            android:textSize="16sp" />
-
-                        <TextView
-                            android:id="@+id/tvDepDate"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:clickable="true"
-                            android:freezesText="true"
-                            android:gravity="right"
-                            android:text="30/09/2017"
-                            android:textColor="@android:color/black"
-                            android:textSize="18sp" />
+                            android:text="Date"
+                            android:textSize="16sp" />
+
+                        <Button
+                            android:id="@+id/btnDepDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Select"
+                            android:textColor="@android:color/black" />
 
                     </LinearLayout>
 
@@ -379,22 +375,18 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:text="Touch Down"
                             android:textSize="16sp" />
 
-                        <TextView
-                            android:id="@+id/tvTouchDown"
-                            android:layout_width="0dp"
+                        <Button
+                            android:id="@+id/btnTouchDown"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:clickable="true"
-                            android:freezesText="true"
-                            android:gravity="right"
-                            android:text="4:15"
-                            android:textColor="@android:color/black"
-                            android:textSize="18sp" />
+                            android:text="Select"
+                            android:textColor="@android:color/black" />
 
                     </LinearLayout>
 
@@ -405,22 +397,18 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:text="Block In"
                             android:textSize="16sp" />
 
-                        <TextView
-                            android:id="@+id/tvBlockIn"
-                            android:layout_width="0dp"
+                        <Button
+                            android:id="@+id/btnBlockIn"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:clickable="true"
-                            android:freezesText="true"
-                            android:gravity="right"
-                            android:text="4:15"
-                            android:textColor="@android:color/black"
-                            android:textSize="18sp" />
+                            android:text="Select"
+                            android:textColor="@android:color/black" />
 
                     </LinearLayout>
 
@@ -431,22 +419,18 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Date"
-                            android:textSize="16sp" />
-
-                        <TextView
-                            android:id="@+id/tvArrDate"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:clickable="true"
-                            android:freezesText="true"
-                            android:gravity="right"
-                            android:text="30/09/2017"
-                            android:textColor="@android:color/black"
-                            android:textSize="18sp" />
+                            android:text="Date"
+                            android:textSize="16sp" />
+
+                        <Button
+                            android:id="@+id/btnArrDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Select"
+                            android:textColor="@android:color/black" />
 
                     </LinearLayout>
 
@@ -973,22 +957,18 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="START"
-                            android:textSize="16sp" />
-
-                        <TextView
-                            android:id="@+id/tvStart"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:clickable="true"
-                            android:freezesText="true"
-                            android:gravity="right"
-                            android:text="4:15"
-                            android:textColor="@android:color/black"
-                            android:textSize="18sp" />
+                            android:text="START"
+                            android:textSize="16sp" />
+
+                        <Button
+                            android:id="@+id/btnStart"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Select"
+                            android:textColor="@android:color/black" />
 
                     </LinearLayout>
 
@@ -999,22 +979,18 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="END"
-                            android:textSize="16sp" />
-
-                        <TextView
-                            android:id="@+id/tvEnd"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:clickable="true"
-                            android:freezesText="true"
-                            android:gravity="right"
-                            android:text="4:15"
-                            android:textColor="@android:color/black"
-                            android:textSize="18sp" />
+                            android:text="END"
+                            android:textSize="16sp" />
+
+                        <Button
+                            android:id="@+id/btnEnd"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Select"
+                            android:textColor="@android:color/black" />
 
                     </LinearLayout>
 

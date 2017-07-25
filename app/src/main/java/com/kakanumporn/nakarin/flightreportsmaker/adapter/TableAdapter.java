@@ -178,7 +178,7 @@ public class TableAdapter extends LinkedAdaptiveTableAdapter<ViewHolderImpl> {
                 text = String.valueOf(records.get(index).getArrDelayMinB());
                 break;
             case ReportRecordColumType.ARR_DELAY_TOTAL_MIN:
-                text = records.get(index).getArrDelayTotalMin();
+                text = String.valueOf(records.get(index).getArrDelayTotalMin());
                 break;
             case ReportRecordColumType.ARR_ADULT:
                 text = String.valueOf(records.get(index).getArrAdult());

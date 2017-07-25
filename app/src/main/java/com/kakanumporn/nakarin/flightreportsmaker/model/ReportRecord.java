@@ -41,7 +41,7 @@ public class ReportRecord implements Parcelable {
         arrDelayMinA = in.readInt();
         arrDelayCodeB = in.readString();
         arrDelayMinB = in.readInt();
-        arrDelayTotalMin = in.readString();
+        arrDelayTotalMin = in.readInt();
         arrAdult = in.readInt();
         arrChd = in.readInt();
         arrInf = in.readInt();
@@ -113,7 +113,7 @@ public class ReportRecord implements Parcelable {
         parcel.writeInt(arrDelayMinA);
         parcel.writeString(arrDelayCodeB);
         parcel.writeInt(arrDelayMinB);
-        parcel.writeString(arrDelayTotalMin);
+        parcel.writeInt(arrDelayTotalMin);
         parcel.writeInt(arrAdult);
         parcel.writeInt(arrChd);
         parcel.writeInt(arrInf);
@@ -265,7 +265,7 @@ public class ReportRecord implements Parcelable {
     private int arrDelayMinA;
     private String arrDelayCodeB;
     private int arrDelayMinB;
-    private String arrDelayTotalMin;
+    private int arrDelayTotalMin;
     private int arrAdult;
     private int arrChd;
     private int arrInf;
@@ -513,11 +513,11 @@ public class ReportRecord implements Parcelable {
         this.arrDelayMinB = arrDelayMinB;
     }
 
-    public String getArrDelayTotalMin() {
+    public int getArrDelayTotalMin() {
         return arrDelayTotalMin;
     }
 
-    public void setArrDelayTotalMin(String arrDelayTotalMin) {
+    public void setArrDelayTotalMin(int arrDelayTotalMin) {
         this.arrDelayTotalMin = arrDelayTotalMin;
     }
 

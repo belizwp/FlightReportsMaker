@@ -6,4 +6,67 @@
     <string name="about">About</string>
     <string name="delete">DELETE</string>
 
+    <string-array name="aircraft_array">
+        <item>HS-PGA</item>
+        <item>HS-PGB</item>
+        <item>HS-PGF</item>
+        <item>HS-PGG</item>
+        <item>HS-PGK</item>
+        <item>HS-PGM</item>
+
+        <item>HS-PZA</item>
+        <item>HS-PZB</item>
+        <item>HS-PZC</item>
+        <item>HS-PZD</item>
+        <item>HS-PZE</item>
+        <item>HS-PZF</item>
+        <item>HS-PZG</item>
+        <item>HS-PZH</item>
+        <item>HS-PZJ</item>
+
+        <item>HS-PGN</item>
+        <item>HS-PGT</item>
+        <item>HS-PGX</item>
+        <item>HS-PGY</item>
+        <item>HS-PGZ</item>
+
+        <item>HS-PPA</item>
+        <item>HS-PPB</item>
+        <item>HS-PPC</item>
+        <item>HS-PPF</item>
+        <item>HS-PPG</item>
+        <item>HS-PPM</item>
+        <item>HS-PPN</item>
+        <item>HS-PPR</item>
+        <item>HS-PPS</item>
+
+        <item>HS-PGU</item>
+        <item>HS-PGV</item>
+        <item>HS-PGW</item>
+
+        <item>HS-PPD</item>
+        <item>HS-PPE</item>
+        <item>HS-PPH</item>
+        <item>HS-PPJ</item>
+        <item>HS-PPK</item>
+        <item>HS-PPO</item>
+    </string-array>
+
+    <string-array name="flight_array">
+        <item>PG881</item>
+    </string-array>
+
+    <string-array name="dep_array">
+        <item>USM</item>
+    </string-array>
+
+    <string-array name="delay_code_array">
+        <item></item>
+        <item>00-04</item>
+        <item>01</item>
+        <item>05</item>
+        <item>06</item>
+        <item>09</item>
+    </string-array>
+
 </resources>

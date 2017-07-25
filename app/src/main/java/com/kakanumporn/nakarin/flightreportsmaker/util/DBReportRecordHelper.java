@@ -167,7 +167,7 @@ public class DBReportRecordHelper extends SQLiteOpenHelper {
             record.setArrDelayMinA(cursor.getInt(23));
             record.setArrDelayCodeB(cursor.getString(24));
             record.setArrDelayMinB(cursor.getInt(25));
-            record.setArrDelayTotalMin(cursor.getString(26));
+            record.setArrDelayTotalMin(cursor.getInt(26));
             record.setArrAdult(cursor.getInt(27));
             record.setArrChd(cursor.getInt(28));
             record.setArrInf(cursor.getInt(29));

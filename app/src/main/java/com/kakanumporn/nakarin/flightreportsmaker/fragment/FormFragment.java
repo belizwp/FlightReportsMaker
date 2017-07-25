@@ -9,7 +9,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.kakanumporn.nakarin.flightreportsmaker.R;
 import com.kakanumporn.nakarin.flightreportsmaker.activity.FormActivity;
@@ -27,6 +30,65 @@ public class FormFragment extends Fragment {
     private int mode;
 
     private ReportRecord record;
+    private ArrayAdapter<CharSequence> acAdapter;
+    private ArrayAdapter<CharSequence> flightAdapter;
+    private ArrayAdapter<CharSequence> depAdapter;
+    private ArrayAdapter<CharSequence> delayCodeAdapter;
+
+    private Spinner spinAc;
+
+    private Button btnDepDate;
+    private Spinner spinDepFlight;
+    private Spinner spinDep;
+    private Spinner spinDepDelayCode1;
+    private Spinner spinDepDelayCode2;
+    private EditText etDepMin1;
+    private EditText etDepMin2;
+    private EditText etDepTotalMinDelay;
+    private EditText etDepAdult;
+    private EditText etDepChd;
+    private EditText etDepInf;
+    private EditText etDepTotal;
+
+    private Button btnTouchDown;
+    private Button btnBlockIn;
+    private Button btnArrDate;
+    private Spinner spinArrFlight;
+    private Spinner spinArr;
+    private Spinner spinArrDelayCode1;
+    private Spinner spinArrDelayCode2;
+    private EditText etArrMin1;
+    private EditText etArrMin2;
+    private EditText etArrTotalMinDelay;
+    private EditText etArrAdult;
+    private EditText etArrChd;
+    private EditText etArrInf;
+    private EditText etArrTotal;
+
+    private EditText etBagWeight;
+    private EditText etTotalTrafficLoad;
+    private EditText etUnderload;
+    private EditText etAllowedTrafficLoad;
+
+    private EditText etSpecialMeal;
+    private EditText etTotalMeal;
+
+    private EditText etAeroBridge;
+    private Button btnStart;
+    private Button btnEnd;
+    private EditText etGseRq;
+
+    private EditText etInvNo;
+    private EditText etRefuelReceipt;
+    private EditText etInvFuel;
+    private EditText etTemp;
+    private EditText etActualDens;
+    private EditText etBasicPrice;
+    private EditText etFees;
+    private EditText etAmount;
+
+    private EditText etGha;
+    private EditText etRemark;
 
     private Button btnSubmit;
 
@@ -66,7 +128,6 @@ public class FormFragment extends Fragment {
 
         if (record != null) {
             mode = MODE_EDIT;
-            fillForm();
 
             setHasOptionsMenu(true);
         } else {
@@ -78,23 +139,111 @@ public class FormFragment extends Fragment {
     @SuppressWarnings("UnusedParameters")
     private void initInstances(View rootView, Bundle savedInstanceState) {
         // Init 'View' instance(s) with rootView.findViewById here
+        bindView(rootView);
+        setupView();
+    }
+
+    private void bindView(View rootView) {
+        spinAc = rootView.findViewById(R.id.spinAc);
+
+        btnDepDate = rootView.findViewById(R.id.btnDepDate);
+        spinDepFlight = rootView.findViewById(R.id.spinDepFlight);
+        spinDep = rootView.findViewById(R.id.spinDep);
+        spinDepDelayCode1 = rootView.findViewById(R.id.spinDepDelayCode1);
+        spinDepDelayCode2 = rootView.findViewById(R.id.spinDepDelayCode2);
+        etDepMin1 = rootView.findViewById(R.id.etDepMin1);
+        etDepMin2 = rootView.findViewById(R.id.etDepMin2);
+        etDepTotalMinDelay = rootView.findViewById(R.id.etDepTotalDelayMin);
+        etDepAdult = rootView.findViewById(R.id.etDepAdult);
+        etDepChd = rootView.findViewById(R.id.etDepChd);
+        etDepInf = rootView.findViewById(R.id.etDepInf);
+        etDepTotal = rootView.findViewById(R.id.etDepTotal);
+
+        btnTouchDown = rootView.findViewById(R.id.btnTouchDown);
+        btnBlockIn = rootView.findViewById(R.id.btnBlockIn);
+        btnArrDate = rootView.findViewById(R.id.btnArrDate);
+        spinArrFlight = rootView.findViewById(R.id.spinArrFlight);
+        spinArr = rootView.findViewById(R.id.spinArr);
+        spinArrDelayCode1 = rootView.findViewById(R.id.spinArrDelayCode1);
+        spinArrDelayCode2 = rootView.findViewById(R.id.spinArrDelayCode2);
+        etArrMin1 = rootView.findViewById(R.id.etArrMin1);
+        etArrMin2 = rootView.findViewById(R.id.etArrMin2);
+        etArrTotalMinDelay = rootView.findViewById(R.id.etArrTotalDelayMin);
+        etArrAdult = rootView.findViewById(R.id.etArrAdult);
+        etArrChd = rootView.findViewById(R.id.etArrChd);
+        etArrInf = rootView.findViewById(R.id.etArrInf);
+        etArrTotal = rootView.findViewById(R.id.etArrTotal);
+
+        etBagWeight = rootView.findViewById(R.id.etBagWeight);
+        etTotalTrafficLoad = rootView.findViewById(R.id.etTotalTrafficLoad);
+        etUnderload = rootView.findViewById(R.id.etUnderload);
+        etAllowedTrafficLoad = rootView.findViewById(R.id.etAllowedTrafficLoad);
+
+        etSpecialMeal = rootView.findViewById(R.id.etSpecialMeal);
+        etTotalMeal = rootView.findViewById(R.id.etTotalMeal);
+
+        etAeroBridge = rootView.findViewById(R.id.etAeroBridge);
+        btnStart = rootView.findViewById(R.id.btnStart);
+        btnEnd = rootView.findViewById(R.id.btnEnd);
+        etGseRq = rootView.findViewById(R.id.etGseRq);
+
+        etInvNo = rootView.findViewById(R.id.etInvNo);
+        etRefuelReceipt = rootView.findViewById(R.id.etRefuelReceipt);
+        etInvFuel = rootView.findViewById(R.id.etInvFuel);
+        etTemp = rootView.findViewById(R.id.etTemp);
+        etActualDens = rootView.findViewById(R.id.etActualDensity);
+        etBasicPrice = rootView.findViewById(R.id.etBasicPrice);
+        etFees = rootView.findViewById(R.id.etFees);
+        etAmount = rootView.findViewById(R.id.etAmount);
+
+        etGha = rootView.findViewById(R.id.etGha);
+        etRemark = rootView.findViewById(R.id.etRemark);
+
         btnSubmit = rootView.findViewById(R.id.btnSubmit);
+    }
+
+    private void setupView() {
+        acAdapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.aircraft_array, R.layout.spinner_item);
+        acAdapter.setDropDownViewResource(R.layout.spinner_item);
+        spinAc.setAdapter(acAdapter);
+
+        flightAdapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.flight_array, R.layout.spinner_item);
+        flightAdapter.setDropDownViewResource(R.layout.spinner_item);
+        spinDepFlight.setAdapter(flightAdapter);
+        spinArrFlight.setAdapter(flightAdapter);
+
+        depAdapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.dep_array, R.layout.spinner_item);
+        depAdapter.setDropDownViewResource(R.layout.spinner_item);
+        spinDep.setAdapter(depAdapter);
+        spinArr.setAdapter(depAdapter);
+
+        delayCodeAdapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.delay_code_array, R.layout.spinner_item);
+        delayCodeAdapter.setDropDownViewResource(R.layout.spinner_item);
+        spinDepDelayCode1.setAdapter(delayCodeAdapter);
+        spinDepDelayCode2.setAdapter(delayCodeAdapter);
+        spinArrDelayCode1.setAdapter(delayCodeAdapter);
+        spinArrDelayCode2.setAdapter(delayCodeAdapter);
+
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
+        // TODO: set datetime selection button click listener
 
-    @Override
-    public void onStop() {
-        super.onStop();
+        if (mode == MODE_EDIT) {
+            fillForm();
+
+            btnSubmit.setText("SAVE");
+        } else {
+            btnSubmit.setText("ADD");
+        }
     }
 
     /*
@@ -122,20 +271,162 @@ public class FormFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.action_menu_form_delete) {
+            // TODO: delete this opened record;
+            return true;
+        }
+        return false;
     }
 
     private void fillForm() {
-        // TODO: fill form value by record
+        spinAc.setSelection(acAdapter.getPosition(record.getAc()));
+
+        btnDepDate.setText(fillterText(record.getDepDate()));
+        spinDepFlight.setSelection(flightAdapter.getPosition(record.getDepFlight()));
+        spinDep.setSelection(depAdapter.getPosition(record.getDep()));
+        spinDepDelayCode1.setSelection(delayCodeAdapter.getPosition(record.getDepDelayCodeA()));
+        spinDepDelayCode2.setSelection(delayCodeAdapter.getPosition(record.getDepDelayCodeB()));
+        etDepMin1.setText(String.valueOf(record.getDepDelayMinA()));
+        etDepMin2.setText(String.valueOf(record.getDepDelayMinB()));
+        etDepTotalMinDelay.setText(String.valueOf(record.getDepDelayTotalMin()));
+        etDepAdult.setText(String.valueOf(record.getDepAdult()));
+        etDepChd.setText(String.valueOf(record.getDepChd()));
+        etDepInf.setText(String.valueOf(record.getDepInf()));
+        etDepTotal.setText(String.valueOf(record.getDepTotal()));
+
+        btnTouchDown.setText(fillterText(record.getTouchDown()));
+        btnBlockIn.setText(fillterText(record.getBlockIn()));
+        btnArrDate.setText(fillterText(record.getArrDate()));
+        spinArrFlight.setSelection(flightAdapter.getPosition(record.getArrFlight()));
+        spinArr.setSelection(depAdapter.getPosition(record.getArr()));
+        spinArrDelayCode1.setSelection(delayCodeAdapter.getPosition(record.getArrDelayCodeA()));
+        spinArrDelayCode2.setSelection(delayCodeAdapter.getPosition(record.getArrDelayCodeB()));
+        etArrMin1.setText(String.valueOf(record.getArrDelayMinA()));
+        etArrMin2.setText(String.valueOf(record.getArrDelayMinB()));
+        etArrTotalMinDelay.setText(String.valueOf(record.getArrDelayTotalMin()));
+        etArrAdult.setText(String.valueOf(record.getArrAdult()));
+        etArrChd.setText(String.valueOf(record.getArrChd()));
+        etArrInf.setText(String.valueOf(record.getArrInf()));
+        etArrTotal.setText(String.valueOf(record.getArrTotal()));
+
+        etBagWeight.setText(String.valueOf(record.getBagWeight()));
+        etTotalTrafficLoad.setText(String.valueOf(record.getTotalTrafficLoad()));
+        etUnderload.setText(String.valueOf(record.getUnderloadBeforeLMC()));
+        etAllowedTrafficLoad.setText(String.valueOf(record.getAllowedTrafficLoad()));
+
+        etSpecialMeal.setText(record.getSpecialMeal());
+        etTotalMeal.setText(String.valueOf(record.getTotalMeal()));
+
+        etAeroBridge.setText(record.getAeroBridge());
+        btnStart.setText(fillterText(record.getStart()));
+        btnStart.setText(fillterText(record.getEnd()));
+        etGseRq.setText(record.getGseRq());
+
+        etInvNo.setText(record.getInvNo());
+        etRefuelReceipt.setText(String.valueOf(record.getRefuelReceipt()));
+        etInvFuel.setText(String.valueOf(record.getInvFuel()));
+        etTemp.setText(String.valueOf(record.getTemp()));
+        etActualDens.setText(String.valueOf(record.getActualDensity()));
+        etBasicPrice.setText(record.getBasicPrice());
+        etFees.setText(record.getFees());
+        etAmount.setText(record.getAmount());
+
     }
 
     private void fillRecord() {
-        // TODO: fill record value by form
+        // aircraft
+        record.setAc(acAdapter.getItem(spinAc.getSelectedItemPosition()).toString());
+
+        // departure info
+        record.setDepDate(fillterText(btnDepDate.getText().toString()));
+        record.setDepFlight(flightAdapter.getItem(spinDepFlight.getSelectedItemPosition()).toString());
+        record.setDep(depAdapter.getItem(spinDep.getSelectedItemPosition()).toString());
+        record.setDepDelayCodeA(delayCodeAdapter.getItem(spinDepDelayCode1.getSelectedItemPosition()).toString());
+        record.setDepDelayMinA(getIntVal(etDepMin1.getText().toString()));
+        record.setDepDelayCodeB(delayCodeAdapter.getItem(spinDepDelayCode2.getSelectedItemPosition()).toString());
+        record.setDepDelayMinB(getIntVal(etDepMin2.getText().toString()));
+        record.setDepDelayTotalMin(getIntVal(etDepTotalMinDelay.getText().toString()));
+        record.setDepAdult(getIntVal(etDepAdult.getText().toString()));
+        record.setDepChd(getIntVal(etDepChd.getText().toString()));
+        record.setDepInf(getIntVal(etDepInf.getText().toString()));
+        record.setDepTotal(getIntVal(etDepTotal.getText().toString()));
+
+        // arrive info
+        record.setTouchDown(fillterText(btnTouchDown.getText().toString()));
+        record.setBlockIn(fillterText(btnBlockIn.getText().toString()));
+
+        record.setArrDate(fillterText(btnArrDate.getText().toString()));
+        record.setArrFlight(flightAdapter.getItem(spinArrFlight.getSelectedItemPosition()).toString());
+        record.setArr(depAdapter.getItem(spinArr.getSelectedItemPosition()).toString());
+        record.setArrDelayCodeA(delayCodeAdapter.getItem(spinArrDelayCode1.getSelectedItemPosition()).toString());
+        record.setArrDelayMinA(getIntVal(etArrMin1.getText().toString()));
+        record.setArrDelayCodeB(delayCodeAdapter.getItem(spinArrDelayCode2.getSelectedItemPosition()).toString());
+        record.setArrDelayMinB(getIntVal(etArrMin2.getText().toString()));
+        record.setArrDelayTotalMin(getIntVal(etArrTotalMinDelay.getText().toString()));
+        record.setArrAdult(getIntVal(etArrAdult.getText().toString()));
+        record.setArrChd(getIntVal(etArrChd.getText().toString()));
+        record.setArrInf(getIntVal(etArrInf.getText().toString()));
+        record.setArrTotal(getIntVal(etArrTotal.getText().toString()));
+
+        // load
+        record.setBagWeight(getIntVal(etBagWeight.getText().toString()));
+        record.setTotalTrafficLoad(getIntVal(etTotalTrafficLoad.getText().toString()));
+        record.setUnderloadBeforeLMC(getIntVal(etUnderload.getText().toString()));
+        record.setAllowedTrafficLoad(getIntVal(etAllowedTrafficLoad.getText().toString()));
+
+        // meal
+        record.setSpecialMeal(etSpecialMeal.getText().toString());
+        record.setTotalMeal(getIntVal(etTotalMeal.getText().toString()));
+
+        // bridge
+        record.setAeroBridge(etAeroBridge.getText().toString());
+        record.setStart(fillterText(btnStart.getText().toString()));
+        record.setEnd(fillterText(btnEnd.getText().toString()));
+        record.setGseRq(etGseRq.getText().toString());
+
+        // fuel
+        record.setInvNo(etInvNo.getText().toString());
+        record.setRefuelReceipt(getIntVal(etRefuelReceipt.getText().toString()));
+        record.setInvFuel(getIntVal(etInvFuel.getText().toString()));
+        record.setTemp(getFloatVal(etTemp.getText().toString()));
+        record.setActualDensity(getFloatVal(etActualDens.getText().toString()));
+        record.setBasicPrice(etBasicPrice.getText().toString());
+        record.setFees(etFees.getText().toString());
+        record.setAmount(etAmount.getText().toString());
+
+        // etc.
+        record.setGha(etGha.getText().toString());
+        record.setRemark(etRemark.getText().toString());
     }
 
     public void finish() {
         FormActivity activity = (FormActivity) getActivity();
         fillRecord();
         activity.sendRecord(record);
+    }
+
+    private String fillterText(String text) {
+        if (text.equals("Select")) {
+            return "";
+        } else if (text.equals("")) {
+            return "Select";
+        }
+        return text;
+    }
+
+    private int getIntVal(String text) {
+        try {
+            return Integer.parseInt(text);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+
+    private float getFloatVal(String text) {
+        try {
+            return Float.parseFloat(text);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
     }
 }
