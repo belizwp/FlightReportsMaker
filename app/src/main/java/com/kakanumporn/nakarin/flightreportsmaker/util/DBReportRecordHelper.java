@@ -369,4 +369,12 @@ public class DBReportRecordHelper extends SQLiteOpenHelper {
 
         sqLiteDatabase.close();
     }
+
+    public void deleteRecord(ReportRecord record) {
+        sqLiteDatabase = this.getWritableDatabase();
+
+        sqLiteDatabase.delete(ReportRecord.TABLE, ReportRecord.Column.ID + " = " + record.getId(), null);
+
+        sqLiteDatabase.close();
+    }
 }

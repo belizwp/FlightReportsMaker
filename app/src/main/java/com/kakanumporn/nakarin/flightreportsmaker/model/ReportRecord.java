@@ -386,6 +386,7 @@ public class ReportRecord implements Parcelable {
     }
 
     public int getDepDelayTotalMin() {
+        depDelayTotalMin = depDelayMinA + depDelayMinB;
         return depDelayTotalMin;
     }
 
@@ -418,6 +419,7 @@ public class ReportRecord implements Parcelable {
     }
 
     public int getDepTotal() {
+        depTotal = depAdult + depChd + depInf;
         return depTotal;
     }
 
@@ -514,6 +516,7 @@ public class ReportRecord implements Parcelable {
     }
 
     public int getArrDelayTotalMin() {
+        arrDelayTotalMin = arrDelayMinA + arrDelayMinB;
         return arrDelayTotalMin;
     }
 
@@ -546,6 +549,7 @@ public class ReportRecord implements Parcelable {
     }
 
     public int getArrTotal() {
+        arrTotal = arrAdult + arrChd + arrInf;
         return arrTotal;
     }
 
@@ -578,6 +582,7 @@ public class ReportRecord implements Parcelable {
     }
 
     public int getAllowedTrafficLoad() {
+        allowedTrafficLoad = totalTrafficLoad + underloadBeforeLMC;
         return allowedTrafficLoad;
     }
 

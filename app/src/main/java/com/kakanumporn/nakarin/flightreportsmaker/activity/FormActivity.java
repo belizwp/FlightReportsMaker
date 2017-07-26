@@ -8,6 +8,7 @@ import android.os.Bundle;
 import com.kakanumporn.nakarin.flightreportsmaker.R;
 import com.kakanumporn.nakarin.flightreportsmaker.fragment.FormFragment;
 import com.kakanumporn.nakarin.flightreportsmaker.model.ReportRecord;
+import com.kakanumporn.nakarin.flightreportsmaker.util.MyRequestCode;
 
 public class FormActivity extends AppCompatActivity {
 
@@ -42,6 +43,13 @@ public class FormActivity extends AppCompatActivity {
         Intent returnIntent = new Intent();
         returnIntent.putExtra("record", record);
         setResult(Activity.RESULT_OK, returnIntent);
+        finish();
+    }
+
+    public void deleteRecord(ReportRecord record) {
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("record", record);
+        setResult(MyRequestCode.DELETE_FLIGHT, returnIntent);
         finish();
     }
 }

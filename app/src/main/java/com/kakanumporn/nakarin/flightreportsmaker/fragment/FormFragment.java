@@ -1,8 +1,12 @@
 package com.kakanumporn.nakarin.flightreportsmaker.fragment;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,18 +15,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TimePicker;
 
 import com.kakanumporn.nakarin.flightreportsmaker.R;
 import com.kakanumporn.nakarin.flightreportsmaker.activity.FormActivity;
 import com.kakanumporn.nakarin.flightreportsmaker.model.ReportRecord;
+import com.kakanumporn.nakarin.flightreportsmaker.util.MyDate;
 
 /**
  * Created by nuuneoi on 11/16/2014.
  */
 @SuppressWarnings("unused")
-public class FormFragment extends Fragment {
+public class FormFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
     private static final int MODE_ADD = 0;
     private static final int MODE_EDIT = 1;
@@ -228,14 +235,18 @@ public class FormFragment extends Fragment {
         spinArrDelayCode1.setAdapter(delayCodeAdapter);
         spinArrDelayCode2.setAdapter(delayCodeAdapter);
 
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        btnDepDate.setOnClickListener(this);
+        btnArrDate.setOnClickListener(this);
+        btnTouchDown.setOnClickListener(this);
+        btnBlockIn.setOnClickListener(this);
+        btnStart.setOnClickListener(this);
+        btnEnd.setOnClickListener(this);
+        btnSubmit.setOnClickListener(this);
 
-        // TODO: set datetime selection button click listener
+        etDepMin1.addTextChangedListener(this);
+        etDepMin2.addTextChangedListener(this);
+        etArrMin1.addTextChangedListener(this);
+        etArrMin2.addTextChangedListener(this);
 
         if (mode == MODE_EDIT) {
             fillForm();
@@ -272,7 +283,8 @@ public class FormFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_menu_form_delete) {
-            // TODO: delete this opened record;
+            FormActivity activity = (FormActivity) getActivity();
+            activity.deleteRecord(record);
             return true;
         }
         return false;
@@ -281,52 +293,52 @@ public class FormFragment extends Fragment {
     private void fillForm() {
         spinAc.setSelection(acAdapter.getPosition(record.getAc()));
 
-        btnDepDate.setText(fillterText(record.getDepDate()));
+        btnDepDate.setText(filterText(record.getDepDate()));
         spinDepFlight.setSelection(flightAdapter.getPosition(record.getDepFlight()));
         spinDep.setSelection(depAdapter.getPosition(record.getDep()));
         spinDepDelayCode1.setSelection(delayCodeAdapter.getPosition(record.getDepDelayCodeA()));
         spinDepDelayCode2.setSelection(delayCodeAdapter.getPosition(record.getDepDelayCodeB()));
-        etDepMin1.setText(String.valueOf(record.getDepDelayMinA()));
-        etDepMin2.setText(String.valueOf(record.getDepDelayMinB()));
-        etDepTotalMinDelay.setText(String.valueOf(record.getDepDelayTotalMin()));
-        etDepAdult.setText(String.valueOf(record.getDepAdult()));
-        etDepChd.setText(String.valueOf(record.getDepChd()));
-        etDepInf.setText(String.valueOf(record.getDepInf()));
-        etDepTotal.setText(String.valueOf(record.getDepTotal()));
+        etDepMin1.setText(filterNumber(record.getDepDelayMinA()));
+        etDepMin2.setText(filterNumber(record.getDepDelayMinB()));
+        etDepTotalMinDelay.setText(filterNumber(record.getDepDelayTotalMin()));
+        etDepAdult.setText(filterNumber(record.getDepAdult()));
+        etDepChd.setText(filterNumber(record.getDepChd()));
+        etDepInf.setText(filterNumber(record.getDepInf()));
+        etDepTotal.setText(filterNumber(record.getDepTotal()));
 
-        btnTouchDown.setText(fillterText(record.getTouchDown()));
-        btnBlockIn.setText(fillterText(record.getBlockIn()));
-        btnArrDate.setText(fillterText(record.getArrDate()));
+        btnTouchDown.setText(filterText(record.getTouchDown()));
+        btnBlockIn.setText(filterText(record.getBlockIn()));
+        btnArrDate.setText(filterText(record.getArrDate()));
         spinArrFlight.setSelection(flightAdapter.getPosition(record.getArrFlight()));
         spinArr.setSelection(depAdapter.getPosition(record.getArr()));
         spinArrDelayCode1.setSelection(delayCodeAdapter.getPosition(record.getArrDelayCodeA()));
         spinArrDelayCode2.setSelection(delayCodeAdapter.getPosition(record.getArrDelayCodeB()));
-        etArrMin1.setText(String.valueOf(record.getArrDelayMinA()));
-        etArrMin2.setText(String.valueOf(record.getArrDelayMinB()));
-        etArrTotalMinDelay.setText(String.valueOf(record.getArrDelayTotalMin()));
-        etArrAdult.setText(String.valueOf(record.getArrAdult()));
-        etArrChd.setText(String.valueOf(record.getArrChd()));
-        etArrInf.setText(String.valueOf(record.getArrInf()));
-        etArrTotal.setText(String.valueOf(record.getArrTotal()));
+        etArrMin1.setText(filterNumber(record.getArrDelayMinA()));
+        etArrMin2.setText(filterNumber(record.getArrDelayMinB()));
+        etArrTotalMinDelay.setText(filterNumber(record.getArrDelayTotalMin()));
+        etArrAdult.setText(filterNumber(record.getArrAdult()));
+        etArrChd.setText(filterNumber(record.getArrChd()));
+        etArrInf.setText(filterNumber(record.getArrInf()));
+        etArrTotal.setText(filterNumber(record.getArrTotal()));
 
-        etBagWeight.setText(String.valueOf(record.getBagWeight()));
-        etTotalTrafficLoad.setText(String.valueOf(record.getTotalTrafficLoad()));
-        etUnderload.setText(String.valueOf(record.getUnderloadBeforeLMC()));
-        etAllowedTrafficLoad.setText(String.valueOf(record.getAllowedTrafficLoad()));
+        etBagWeight.setText(filterNumber(record.getBagWeight()));
+        etTotalTrafficLoad.setText(filterNumber(record.getTotalTrafficLoad()));
+        etUnderload.setText(filterNumber(record.getUnderloadBeforeLMC()));
+        etAllowedTrafficLoad.setText(filterNumber(record.getAllowedTrafficLoad()));
 
         etSpecialMeal.setText(record.getSpecialMeal());
-        etTotalMeal.setText(String.valueOf(record.getTotalMeal()));
+        etTotalMeal.setText(filterNumber(record.getTotalMeal()));
 
         etAeroBridge.setText(record.getAeroBridge());
-        btnStart.setText(fillterText(record.getStart()));
-        btnStart.setText(fillterText(record.getEnd()));
+        btnStart.setText(filterText(record.getStart()));
+        btnStart.setText(filterText(record.getEnd()));
         etGseRq.setText(record.getGseRq());
 
         etInvNo.setText(record.getInvNo());
-        etRefuelReceipt.setText(String.valueOf(record.getRefuelReceipt()));
-        etInvFuel.setText(String.valueOf(record.getInvFuel()));
-        etTemp.setText(String.valueOf(record.getTemp()));
-        etActualDens.setText(String.valueOf(record.getActualDensity()));
+        etRefuelReceipt.setText(filterNumber(record.getRefuelReceipt()));
+        etInvFuel.setText(filterNumber(record.getInvFuel()));
+        etTemp.setText(filterNumber(record.getTemp()));
+        etActualDens.setText(filterNumber(record.getActualDensity()));
         etBasicPrice.setText(record.getBasicPrice());
         etFees.setText(record.getFees());
         etAmount.setText(record.getAmount());
@@ -338,7 +350,7 @@ public class FormFragment extends Fragment {
         record.setAc(acAdapter.getItem(spinAc.getSelectedItemPosition()).toString());
 
         // departure info
-        record.setDepDate(fillterText(btnDepDate.getText().toString()));
+        record.setDepDate(filterText(btnDepDate.getText().toString()));
         record.setDepFlight(flightAdapter.getItem(spinDepFlight.getSelectedItemPosition()).toString());
         record.setDep(depAdapter.getItem(spinDep.getSelectedItemPosition()).toString());
         record.setDepDelayCodeA(delayCodeAdapter.getItem(spinDepDelayCode1.getSelectedItemPosition()).toString());
@@ -352,10 +364,10 @@ public class FormFragment extends Fragment {
         record.setDepTotal(getIntVal(etDepTotal.getText().toString()));
 
         // arrive info
-        record.setTouchDown(fillterText(btnTouchDown.getText().toString()));
-        record.setBlockIn(fillterText(btnBlockIn.getText().toString()));
+        record.setTouchDown(filterText(btnTouchDown.getText().toString()));
+        record.setBlockIn(filterText(btnBlockIn.getText().toString()));
 
-        record.setArrDate(fillterText(btnArrDate.getText().toString()));
+        record.setArrDate(filterText(btnArrDate.getText().toString()));
         record.setArrFlight(flightAdapter.getItem(spinArrFlight.getSelectedItemPosition()).toString());
         record.setArr(depAdapter.getItem(spinArr.getSelectedItemPosition()).toString());
         record.setArrDelayCodeA(delayCodeAdapter.getItem(spinArrDelayCode1.getSelectedItemPosition()).toString());
@@ -380,8 +392,8 @@ public class FormFragment extends Fragment {
 
         // bridge
         record.setAeroBridge(etAeroBridge.getText().toString());
-        record.setStart(fillterText(btnStart.getText().toString()));
-        record.setEnd(fillterText(btnEnd.getText().toString()));
+        record.setStart(filterText(btnStart.getText().toString()));
+        record.setEnd(filterText(btnEnd.getText().toString()));
         record.setGseRq(etGseRq.getText().toString());
 
         // fuel
@@ -405,13 +417,27 @@ public class FormFragment extends Fragment {
         activity.sendRecord(record);
     }
 
-    private String fillterText(String text) {
+    private String filterText(String text) {
         if (text.equals("Select")) {
             return "";
         } else if (text.equals("")) {
             return "Select";
         }
         return text;
+    }
+
+    private String filterNumber(int i) {
+        if (i == 0) {
+            return "";
+        }
+        return String.valueOf(i);
+    }
+
+    private String filterNumber(float i) {
+        if (i == 0) {
+            return "";
+        }
+        return String.valueOf(i);
     }
 
     private int getIntVal(String text) {
@@ -428,5 +454,92 @@ public class FormFragment extends Fragment {
         } catch (NumberFormatException e) {
             return 0;
         }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btnSubmit:
+                finish();
+                break;
+            case R.id.btnDepDate:
+            case R.id.btnArrDate:
+                showDatePikerDialog(view);
+                break;
+            case R.id.btnTouchDown:
+            case R.id.btnBlockIn:
+            case R.id.btnStart:
+            case R.id.btnEnd:
+                showTimePickerDialog(view);
+                break;
+        }
+    }
+
+    public void showDatePikerDialog(View view) {
+        int day, month, year;
+        final Button button = (Button) view;
+
+        String[] date = button.getText().toString().split("/");
+        try {
+            day = Integer.parseInt(date[0]);
+            month = Integer.parseInt(date[1]) - 1;
+            year = Integer.parseInt(date[2]);
+        } catch (NumberFormatException e) {
+            day = MyDate.getDay();
+            month = MyDate.getMonth();
+            year = MyDate.getYear();
+        }
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                button.setText(String.format("%d/%d/%d", day, month + 1, year));
+            }
+        }, year, month, day);
+        datePickerDialog.show();
+    }
+
+    public void showTimePickerDialog(View view) {
+        int hour, min;
+
+        final Button button = (Button) view;
+
+        String[] time = button.getText().toString().split(":");
+        try {
+            hour = Integer.parseInt(time[0]);
+            min = Integer.parseInt(time[1]);
+        } catch (NumberFormatException e) {
+            hour = 0;
+            min = 0;
+        }
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int hour, int min) {
+                button.setText(hour + ":" + min);
+            }
+        }, hour, min, true);
+        timePickerDialog.show();
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        record.setDepDelayMinA(getIntVal(etDepMin1.getText().toString()));
+        record.setDepDelayMinB(getIntVal(etDepMin2.getText().toString()));
+        etDepTotalMinDelay.setText(filterNumber(record.getDepDelayTotalMin()));
+
+        record.setArrDelayMinA(getIntVal(etArrMin1.getText().toString()));
+        record.setArrDelayMinB(getIntVal(etArrMin2.getText().toString()));
+        etArrTotalMinDelay.setText(filterNumber(record.getArrDelayTotalMin()));
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+
     }
 }

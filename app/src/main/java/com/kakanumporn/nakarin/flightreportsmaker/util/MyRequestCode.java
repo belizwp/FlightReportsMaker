@@ -8,4 +8,5 @@ public class MyRequestCode {
 
     public static final int ADD_FLIGHT = 0;
     public static final int EDIT_FLIGHT = 1;
+    public static final int DELETE_FLIGHT = 2;
 }

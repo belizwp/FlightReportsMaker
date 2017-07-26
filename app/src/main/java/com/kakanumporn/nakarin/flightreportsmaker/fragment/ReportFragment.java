@@ -18,7 +18,6 @@ import com.kakanumporn.nakarin.flightreportsmaker.activity.FormActivity;
 import com.kakanumporn.nakarin.flightreportsmaker.adapter.TableAdapter;
 import com.kakanumporn.nakarin.flightreportsmaker.model.ReportRecord;
 import com.kakanumporn.nakarin.flightreportsmaker.util.MyRequestCode;
-import com.kakanumporn.nakarin.flightreportsmaker.util.ScreenUtil;
 
 /**
  * Created by nuuneoi on 11/16/2014.
@@ -158,6 +157,15 @@ public class ReportFragment extends Fragment {
                     tableAdapter.updateRecord(record);
                     tableAdapter.notifyDataSetChanged();
                     Toast.makeText(getContext(), "Record " + record.getId() + " Edited ", Toast.LENGTH_SHORT).show();
+                }
+            }
+            if (resultCode == MyRequestCode.DELETE_FLIGHT) {
+                ReportRecord record = data.getParcelableExtra("record");
+                if (record != null) {
+                    tableAdapter.deleteRecord(record);
+                    // tableAdapter.notifyDataSetChanged();
+                    Toast.makeText(getContext(), "Record " + record.getId() + " Deleted ", Toast.LENGTH_SHORT).show();
+                    // TODO: find the way to refresh data
                 }
             }
             if (resultCode == Activity.RESULT_CANCELED) {

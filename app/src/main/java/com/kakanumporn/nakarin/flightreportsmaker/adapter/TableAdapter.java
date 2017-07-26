@@ -58,7 +58,14 @@ public class TableAdapter extends LinkedAdaptiveTableAdapter<ViewHolderImpl> {
     public void updateRecord(ReportRecord record) {
         record.setReportId(id);
         dbHelper.updateRecord(record);
-        // TODO: require rowIndex for update record properly
+        // TODO: require rowIndex for update records properly
+        records.clear();
+        loadData();
+    }
+
+    public void deleteRecord(ReportRecord record) {
+        dbHelper.deleteRecord(record);
+        // TODO: require rowIndex for update records properly
         records.clear();
         loadData();
     }
@@ -121,28 +128,28 @@ public class TableAdapter extends LinkedAdaptiveTableAdapter<ViewHolderImpl> {
                 text = records.get(index).getDepDelayCodeA();
                 break;
             case ReportRecordColumType.DEP_DELAY_MIN_A:
-                text = String.valueOf(records.get(index).getDepDelayMinA());
+                text = filterNumber(records.get(index).getDepDelayMinA());
                 break;
             case ReportRecordColumType.DEP_DELAY_CODE_B:
                 text = records.get(index).getDepDelayCodeB();
                 break;
             case ReportRecordColumType.DEP_DELAY_MIN_B:
-                text = String.valueOf(records.get(index).getDepDelayMinB());
+                text = filterNumber(records.get(index).getDepDelayMinB());
                 break;
             case ReportRecordColumType.DEP_DELAY_TOTAL_MIN:
-                text = String.valueOf(records.get(index).getDepDelayTotalMin());
+                text = filterNumber(records.get(index).getDepDelayTotalMin());
                 break;
             case ReportRecordColumType.DEP_ADULT:
-                text = String.valueOf(records.get(index).getDepAdult());
+                text = filterNumber(records.get(index).getDepAdult());
                 break;
             case ReportRecordColumType.DEP_CHD:
-                text = String.valueOf(records.get(index).getDepChd());
+                text = filterNumber(records.get(index).getDepChd());
                 break;
             case ReportRecordColumType.DEP_INF:
-                text = String.valueOf(records.get(index).getDepInf());
+                text = filterNumber(records.get(index).getDepInf());
                 break;
             case ReportRecordColumType.DEP_TOTAL:
-                text = String.valueOf(records.get(index).getDepTotal());
+                text = filterNumber(records.get(index).getDepTotal());
                 break;
             case ReportRecordColumType.TOUCH_DOWN:
                 text = records.get(index).getTouchDown();
@@ -169,46 +176,46 @@ public class TableAdapter extends LinkedAdaptiveTableAdapter<ViewHolderImpl> {
                 text = records.get(index).getArrDelayCodeA();
                 break;
             case ReportRecordColumType.ARR_DELAY_MIN_A:
-                text = String.valueOf(records.get(index).getArrDelayMinA());
+                text = filterNumber(records.get(index).getArrDelayMinA());
                 break;
             case ReportRecordColumType.ARR_DELAY_CODE_B:
                 text = records.get(index).getArrDelayCodeB();
                 break;
             case ReportRecordColumType.ARR_DELAY_MIN_B:
-                text = String.valueOf(records.get(index).getArrDelayMinB());
+                text = filterNumber(records.get(index).getArrDelayMinB());
                 break;
             case ReportRecordColumType.ARR_DELAY_TOTAL_MIN:
-                text = String.valueOf(records.get(index).getArrDelayTotalMin());
+                text = filterNumber(records.get(index).getArrDelayTotalMin());
                 break;
             case ReportRecordColumType.ARR_ADULT:
-                text = String.valueOf(records.get(index).getArrAdult());
+                text = filterNumber(records.get(index).getArrAdult());
                 break;
             case ReportRecordColumType.ARR_CHD:
-                text = String.valueOf(records.get(index).getArrChd());
+                text = filterNumber(records.get(index).getArrChd());
                 break;
             case ReportRecordColumType.ARR_INF:
-                text = String.valueOf(records.get(index).getArrInf());
+                text = filterNumber(records.get(index).getArrInf());
                 break;
             case ReportRecordColumType.ARR_TOTAL:
-                text = String.valueOf(records.get(index).getArrTotal());
+                text = filterNumber(records.get(index).getArrTotal());
                 break;
             case ReportRecordColumType.BAG_WEIGHT:
-                text = String.valueOf(records.get(index).getBagWeight());
+                text = filterNumber(records.get(index).getBagWeight());
                 break;
             case ReportRecordColumType.TOTAL_TRAFFIC_LOAD:
-                text = String.valueOf(records.get(index).getTotalTrafficLoad());
+                text = filterNumber(records.get(index).getTotalTrafficLoad());
                 break;
             case ReportRecordColumType.UNDERLOAD_BEFORE_LMC:
-                text = String.valueOf(records.get(index).getUnderloadBeforeLMC());
+                text = filterNumber(records.get(index).getUnderloadBeforeLMC());
                 break;
             case ReportRecordColumType.ALLOWED_TRAFFIC_LOAD:
-                text = String.valueOf(records.get(index).getAllowedTrafficLoad());
+                text = filterNumber(records.get(index).getAllowedTrafficLoad());
                 break;
             case ReportRecordColumType.SPECIAL_MEAL:
                 text = records.get(index).getSpecialMeal();
                 break;
             case ReportRecordColumType.TOTAL_MEAL:
-                text = String.valueOf(records.get(index).getTotalMeal());
+                text = filterNumber(records.get(index).getTotalMeal());
                 break;
             case ReportRecordColumType.AERO_BRIDGE:
                 text = records.get(index).getAeroBridge();
@@ -226,16 +233,16 @@ public class TableAdapter extends LinkedAdaptiveTableAdapter<ViewHolderImpl> {
                 text = records.get(index).getInvNo();
                 break;
             case ReportRecordColumType.REFUEL_RECEIPT:
-                text = String.valueOf(records.get(index).getRefuelReceipt());
+                text = filterNumber(records.get(index).getRefuelReceipt());
                 break;
             case ReportRecordColumType.INV_FUEL:
-                text = String.valueOf(records.get(index).getInvFuel());
+                text = filterNumber(records.get(index).getInvFuel());
                 break;
             case ReportRecordColumType.TEMP:
-                text = String.valueOf(records.get(index).getTemp());
+                text = filterNumber(records.get(index).getTemp());
                 break;
             case ReportRecordColumType.ACTUAL_DENSITY:
-                text = String.valueOf(records.get(index).getActualDensity());
+                text = filterNumber(records.get(index).getActualDensity());
                 break;
             case ReportRecordColumType.BASIC_PRICE:
                 text = records.get(index).getBasicPrice();
@@ -294,6 +301,20 @@ public class TableAdapter extends LinkedAdaptiveTableAdapter<ViewHolderImpl> {
     @Override
     public int getHeaderRowWidth() {
         return (int) ScreenUtil.convertDpToPixel(48, context);
+    }
+
+    private String filterNumber(int i) {
+        if (i == 0) {
+            return "";
+        }
+        return String.valueOf(i);
+    }
+
+    private String filterNumber(float i) {
+        if (i == 0) {
+            return "";
+        }
+        return String.valueOf(i);
     }
 
     //------------------------------------- view holders ------------------------------------------
