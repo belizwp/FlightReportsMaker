@@ -7,7 +7,9 @@
     <com.cleveroad.adaptivetablelayout.AdaptiveTableLayout
         android:id="@+id/tableLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryDark"
+        app:cellMargin="1dp" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floatingActionButton"
