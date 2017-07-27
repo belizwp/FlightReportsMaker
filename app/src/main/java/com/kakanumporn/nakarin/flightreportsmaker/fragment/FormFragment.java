@@ -243,6 +243,14 @@ public class FormFragment extends Fragment implements View.OnClickListener, Text
         btnEnd.setOnClickListener(this);
         btnSubmit.setOnClickListener(this);
 
+        if (mode == MODE_EDIT) {
+            fillForm();
+
+            btnSubmit.setText("SAVE");
+        } else {
+            btnSubmit.setText("ADD");
+        }
+
         etDepMin1.addTextChangedListener(this);
         etDepMin2.addTextChangedListener(this);
         etArrMin1.addTextChangedListener(this);
@@ -256,13 +264,6 @@ public class FormFragment extends Fragment implements View.OnClickListener, Text
         etArrChd.addTextChangedListener(this);
         etArrInf.addTextChangedListener(this);
 
-        if (mode == MODE_EDIT) {
-            fillForm();
-
-            btnSubmit.setText("SAVE");
-        } else {
-            btnSubmit.setText("ADD");
-        }
     }
 
     /*
@@ -339,7 +340,7 @@ public class FormFragment extends Fragment implements View.OnClickListener, Text
 
         etAeroBridge.setText(record.getAeroBridge());
         btnStart.setText(filterText(record.getStart()));
-        btnStart.setText(filterText(record.getEnd()));
+        btnEnd.setText(filterText(record.getEnd()));
         etGseRq.setText(record.getGseRq());
 
         etInvNo.setText(record.getInvNo());
@@ -350,6 +351,9 @@ public class FormFragment extends Fragment implements View.OnClickListener, Text
         etBasicPrice.setText(record.getBasicPrice());
         etFees.setText(record.getFees());
         etAmount.setText(record.getAmount());
+
+        etGha.setText(record.getGha());
+        etRemark.setText(record.getRemark());
 
     }
 
