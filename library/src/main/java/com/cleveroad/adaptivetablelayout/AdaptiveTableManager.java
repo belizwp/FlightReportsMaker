@@ -133,7 +133,14 @@ class AdaptiveTableManager {
      */
     int getRowHeight(int row) {
         checkForInit();
-        return mRowHeights[row];
+        try {
+            return mRowHeights[row];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            if (row == 0) {
+                return 0;
+            }
+            return mRowHeights[mRowHeights.length - 1];
+        }
     }
 
 

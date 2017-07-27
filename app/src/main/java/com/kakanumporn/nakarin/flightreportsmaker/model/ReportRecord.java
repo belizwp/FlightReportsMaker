@@ -66,6 +66,7 @@ public class ReportRecord implements Parcelable {
         amount = in.readString();
         gha = in.readString();
         remark = in.readString();
+        currentRow = in.readInt();
     }
 
     public static final Creator<ReportRecord> CREATOR = new Creator<ReportRecord>() {
@@ -138,6 +139,7 @@ public class ReportRecord implements Parcelable {
         parcel.writeString(amount);
         parcel.writeString(gha);
         parcel.writeString(remark);
+        parcel.writeInt(currentRow);
     }
 
     public class Column {
@@ -301,8 +303,18 @@ public class ReportRecord implements Parcelable {
     private String gha;
     private String remark;
 
+    private int currentRow;
+
     public ReportRecord() {
 
+    }
+
+    public int getCurrentRow() {
+        return currentRow;
+    }
+
+    public void setCurrentRow(int currentRow) {
+        this.currentRow = currentRow;
     }
 
     public long getId() {

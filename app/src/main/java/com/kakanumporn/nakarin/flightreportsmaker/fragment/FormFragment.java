@@ -247,6 +247,14 @@ public class FormFragment extends Fragment implements View.OnClickListener, Text
         etDepMin2.addTextChangedListener(this);
         etArrMin1.addTextChangedListener(this);
         etArrMin2.addTextChangedListener(this);
+        etTotalTrafficLoad.addTextChangedListener(this);
+        etUnderload.addTextChangedListener(this);
+        etDepAdult.addTextChangedListener(this);
+        etDepChd.addTextChangedListener(this);
+        etDepInf.addTextChangedListener(this);
+        etArrAdult.addTextChangedListener(this);
+        etArrChd.addTextChangedListener(this);
+        etArrInf.addTextChangedListener(this);
 
         if (mode == MODE_EDIT) {
             fillForm();
@@ -536,6 +544,20 @@ public class FormFragment extends Fragment implements View.OnClickListener, Text
         record.setArrDelayMinA(getIntVal(etArrMin1.getText().toString()));
         record.setArrDelayMinB(getIntVal(etArrMin2.getText().toString()));
         etArrTotalMinDelay.setText(filterNumber(record.getArrDelayTotalMin()));
+
+        record.setTotalTrafficLoad(getIntVal(etTotalTrafficLoad.getText().toString()));
+        record.setUnderloadBeforeLMC(getIntVal(etUnderload.getText().toString()));
+        etAllowedTrafficLoad.setText(filterNumber(record.getAllowedTrafficLoad()));
+
+        record.setDepAdult(getIntVal(etDepAdult.getText().toString()));
+        record.setDepChd(getIntVal(etDepChd.getText().toString()));
+        record.setDepInf(getIntVal(etDepInf.getText().toString()));
+        etDepTotal.setText(filterNumber(record.getDepTotal()));
+
+        record.setArrAdult(getIntVal(etArrAdult.getText().toString()));
+        record.setArrChd(getIntVal(etArrChd.getText().toString()));
+        record.setArrInf(getIntVal(etArrInf.getText().toString()));
+        etArrTotal.setText(filterNumber(record.getArrTotal()));
     }
 
     @Override

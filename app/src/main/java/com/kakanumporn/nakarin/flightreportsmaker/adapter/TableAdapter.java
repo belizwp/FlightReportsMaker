@@ -58,16 +58,13 @@ public class TableAdapter extends LinkedAdaptiveTableAdapter<ViewHolderImpl> {
     public void updateRecord(ReportRecord record) {
         record.setReportId(id);
         dbHelper.updateRecord(record);
-        // TODO: require rowIndex for update records properly
-        records.clear();
-        loadData();
+        records.remove(record.getCurrentRow());
+        records.add(record.getCurrentRow(), record);
     }
 
     public void deleteRecord(ReportRecord record) {
         dbHelper.deleteRecord(record);
-        // TODO: require rowIndex for update records properly
-        records.clear();
-        loadData();
+        records.remove(record.getCurrentRow());
     }
 
     @Override
@@ -273,8 +270,7 @@ public class TableAdapter extends LinkedAdaptiveTableAdapter<ViewHolderImpl> {
     @Override
     public void onBindHeaderRowViewHolder(@NonNull ViewHolderImpl viewHolder, int row) {
         final TestViewHolder vh = (TestViewHolder) viewHolder;
-        // TODO: change to row order
-        vh.tvText.setText(records.get(row - 1).getId() + "");
+        vh.tvText.setText(String.valueOf(row));
     }
 
     @Override

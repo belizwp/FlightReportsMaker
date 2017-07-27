@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -121,6 +122,7 @@ public class ReportFragment extends Fragment {
         public void onItemLongClick(int row, int column) {
             Toast.makeText(getContext(), "Edit Record", Toast.LENGTH_SHORT).show();
             ReportRecord record = tableAdapter.getRecord(row);
+            record.setCurrentRow(row);
 
             Intent intent = new Intent(getContext(), FormActivity.class);
             intent.putExtra("record", record);
@@ -155,7 +157,7 @@ public class ReportFragment extends Fragment {
                 ReportRecord record = data.getParcelableExtra("record");
                 if (record != null) {
                     tableAdapter.updateRecord(record);
-                    tableAdapter.notifyDataSetChanged();
+                    tableAdapter.notifyRowChanged(record.getCurrentRow());
                     Toast.makeText(getContext(), "Record " + record.getId() + " Edited ", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -163,9 +165,13 @@ public class ReportFragment extends Fragment {
                 ReportRecord record = data.getParcelableExtra("record");
                 if (record != null) {
                     tableAdapter.deleteRecord(record);
-                    // tableAdapter.notifyDataSetChanged();
                     Toast.makeText(getContext(), "Record " + record.getId() + " Deleted ", Toast.LENGTH_SHORT).show();
-                    // TODO: find the way to refresh data
+                    // TODO: improve data refresh
+                    initAdapter(); // re-init for now
+                    for (int i = 0; i < tableAdapter.getRowCount() - 1; i++) {
+                        tableAdapter.notifyRowChanged(i);
+                    }
+                    tableLayout.scrollBy(0, 0);
                 }
             }
             if (resultCode == Activity.RESULT_CANCELED) {
