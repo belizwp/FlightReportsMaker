@@ -32,5 +32,6 @@ dependencies {
     compile 'com.android.support:design:26.+'
     compile 'com.android.support:support-v4:26.+'
     compile 'com.daimajia.swipelayout:library:1.2.0@aar'
+    compile group: 'org.apache.poi', name: 'poi', version: '3.16'
     testCompile 'junit:junit:4.12'
 }

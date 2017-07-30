@@ -1,11 +1,15 @@
 package com.kakanumporn.nakarin.flightreportsmaker.adapter;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +25,9 @@ import com.kakanumporn.nakarin.flightreportsmaker.manager.Contextor;
 import com.kakanumporn.nakarin.flightreportsmaker.model.Report;
 import com.kakanumporn.nakarin.flightreportsmaker.util.DBReportHelper;
 import com.kakanumporn.nakarin.flightreportsmaker.util.MyDate;
+import com.kakanumporn.nakarin.flightreportsmaker.util.ReportExporter;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -136,9 +142,42 @@ public class ReportAdapter extends RecyclerSwipeAdapter {
         notifyItemChanged(reportList.indexOf(report));
     }
 
-    public void exportReport(Report report) {
-        // TODO: send to export activity
-        Toast.makeText(context, "Export " + report.getTitle(), Toast.LENGTH_SHORT).show();
+    public void exportReport(final Report report) {
+        ReportExporter exporter = new ReportExporter(Contextor.getInstance().getContext(),
+                context.getFilesDir() + File.separator);
+
+        final String fileName = "temp.xls";
+
+        exporter.export(report, fileName, new ReportExporter.ExportListener() {
+            @Override
+            public void onStart() {
+                Log.d("export", "started");
+            }
+
+            @Override
+            public void onCompleted(String filePath) {
+                Toast.makeText(context, "Export " + report.getTitle(), Toast.LENGTH_SHORT).show();
+                Log.d("export", "completed");
+                Log.d("export", context.getFilesDir() + File.separator);
+
+                // TODO: send to export activity (need fileProvider)
+//                Uri uri = Uri.fromFile(new File(context.getFilesDir() + File.separator + fileName));
+//
+//                Intent intent = new Intent(Intent.ACTION_VIEW);
+//                intent.setDataAndType(uri, "application/vnd.ms-excel");
+//
+//                try {
+//                    context.startActivity(intent);
+//                } catch (ActivityNotFoundException e) {
+//                    Toast.makeText(context, "No Application Available to View Excel", Toast.LENGTH_SHORT).show();
+//                }
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.d("export", "err: " + e.getMessage());
+            }
+        });
     }
 
     public void openReport(Report report) {
