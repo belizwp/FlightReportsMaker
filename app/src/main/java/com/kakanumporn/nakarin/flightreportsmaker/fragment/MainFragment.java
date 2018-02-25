@@ -1,12 +1,16 @@
 package com.kakanumporn.nakarin.flightreportsmaker.fragment;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,6 +37,8 @@ import com.kakanumporn.nakarin.flightreportsmaker.util.MyDate;
  */
 
 public class MainFragment extends Fragment {
+
+    private final int REQUST_WRITE_EXT_STORAGE = 0;
 
     private RecyclerView rvReports;
     private ReportAdapter reportsAdapter;
@@ -103,7 +109,7 @@ public class MainFragment extends Fragment {
     private void showAddReportDialog() {
         AlertDialog.Builder addReportDialog = new AlertDialog.Builder(getContext());
         final EditText etReportTitle = new EditText(getContext());
-        etReportTitle.setText(MyDate.getDate("d/MMMM/yyyy"));
+        etReportTitle.setText(MyDate.getDate("d-MMMM-yyyy"));
         etReportTitle.requestFocus();
 
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -124,6 +130,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        checkPermission(REQUST_WRITE_EXT_STORAGE);
     }
 
     @Override
@@ -164,6 +171,41 @@ public class MainFragment extends Fragment {
             return true;
         }
         return false;
+    }
+
+    private void checkPermission(int REQUST_CODE) {
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    REQUST_CODE);
+
+        } else {
+            switch (REQUST_CODE) {
+                case REQUST_WRITE_EXT_STORAGE:
+                    // nothing
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case REQUST_WRITE_EXT_STORAGE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    showToast("Export excel now available");
+                } else {
+                    showToast("need permission!");
+                }
+                return;
+            }
+        }
+    }
+
+    private void showToast(String text) {
+        Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
     }
 
     /***********

@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.ContactsContract;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -144,9 +146,9 @@ public class ReportAdapter extends RecyclerSwipeAdapter {
 
     public void exportReport(final Report report) {
         ReportExporter exporter = new ReportExporter(Contextor.getInstance().getContext(),
-                context.getFilesDir() + File.separator);
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + File.separator);
 
-        final String fileName = "temp.xls";
+        final String fileName = "report_" + report.getId() + "_" + report.getTitle() + ".xls";
 
         exporter.export(report, fileName, new ReportExporter.ExportListener() {
             @Override
@@ -158,7 +160,7 @@ public class ReportAdapter extends RecyclerSwipeAdapter {
             public void onCompleted(String filePath) {
                 Toast.makeText(context, "Export " + report.getTitle(), Toast.LENGTH_SHORT).show();
                 Log.d("export", "completed");
-                Log.d("export", context.getFilesDir() + File.separator);
+                Log.d("export", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + File.separator);
 
                 // TODO: send to export activity (need fileProvider)
 //                Uri uri = Uri.fromFile(new File(context.getFilesDir() + File.separator + fileName));
